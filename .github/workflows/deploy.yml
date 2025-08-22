@@ -1,0 +1,113 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  # 代码质量检查作业
+  quality-check:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: |
+        npm install -g html5-validator stylelint eslint
+
+    - name: Validate HTML
+      run: |
+        find . -name "*.html" -not -path "./node_modules/*" | while read file; do
+          echo "Validating $file"
+          html5-validator --file="$file" || true
+        done
+
+    - name: Check CSS (if stylelint config exists)
+      run: |
+        if [ -f ".stylelintrc.json" ] || [ -f "stylelint.config.js" ]; then
+          npx stylelint "assets/css/*.css" || true
+        else
+          echo "No stylelint config found, skipping CSS check"
+        fi
+
+    - name: Check JavaScript (if eslint config exists)
+      run: |
+        if [ -f ".eslintrc.json" ] || [ -f "eslint.config.js" ]; then
+          npx eslint "assets/js/*.js" || true
+        else
+          echo "No eslint config found, skipping JS check"
+        fi
+
+    - name: Test local server startup
+      run: |
+        python3 -m http.server 8000 &
+        SERVER_PID=$!
+        sleep 3
+        curl -f http://localhost:8000/ || (echo "Failed to start local server" && exit 1)
+        kill $SERVER_PID
+
+  # 部署作业
+  deploy:
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    needs: quality-check
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Setup Pages
+      uses: actions/configure-pages@v4
+
+    - name: Upload artifact
+      uses: actions/upload-pages-artifact@v3
+      with:
+        path: '.'
+
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v4
+
+  # 性能测试作业（仅在部署后运行）
+  performance-test:
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+
+    - name: Install Lighthouse CI
+      run: npm install -g @lhci/cli
+
+    - name: Run Lighthouse CI
+      run: |
+        lhci autorun --upload.target=temporary-public-storage || true
+      env:
+        LHCI_GITHUB_APP_TOKEN: ${{ secrets.GITHUB_TOKEN }}

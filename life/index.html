@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="生活分享 - 记录生活中的美好瞬间，分享日常的小确幸，传递生活的正能量和智慧">
+    <meta name="keywords" content="生活分享,日常生活,小确幸,生活感悟,正能量,生活智慧">
+    <meta name="author" content="开心快乐每一天">
+    <meta name="robots" content="index, follow">
+    
+    <title>生活分享 - 开心快乐每一天</title>
+    
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="../assets/css/reset.css">
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="../assets/css/responsive.css">
+</head>
+<body>
+    <!-- 网站头部 -->
+    <header class="site-header" role="banner">
+        <div class="container">
+            <div class="header-content">
+                <!-- 网站标志 -->
+                <a href="../" class="site-logo" aria-label="开心快乐每一天首页">
+                    开心快乐每一天
+                </a>
+                
+                <!-- 主导航 -->
+                <nav class="main-nav" role="navigation" aria-label="主导航">
+                    <a href="../" class="nav-link">首页</a>
+                    <a href="../about.html" class="nav-link">关于我</a>
+                    <a href="../life/" class="nav-link active">生活分享</a>
+                    <a href="../study/" class="nav-link">学习分享</a>
+                    <a href="../work/" class="nav-link">工作分享</a>
+                </nav>
+                
+                <!-- 功能按钮区域 -->
+                <div class="header-actions">
+                    <!-- 主题切换按钮 -->
+                    <button class="theme-toggle" aria-label="切换主题" title="切换明暗主题">
+                        🌙
+                    </button>
+                    
+                    <!-- 移动端菜单切换 -->
+                    <button class="mobile-menu-toggle" aria-label="菜单" aria-expanded="false">
+                        <span class="hamburger-line"></span>
+                        <span class="hamburger-line"></span>
+                        <span class="hamburger-line"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- 面包屑导航 -->
+    <nav class="breadcrumb" aria-label="面包屑导航">
+        <div class="container">
+            <ol class="breadcrumb-list">
+                <li class="breadcrumb-item"><a href="../">首页</a></li>
+                <li class="breadcrumb-item">生活分享</li>
+            </ol>
+        </div>
+    </nav>
+    
+    <!-- 主要内容区域 -->
+    <main class="main-content" role="main">
+        <div class="container">
+            
+            <!-- 页面标题 -->
+            <div class="page-header">
+                <h1 class="page-title">🌈 生活分享</h1>
+                <p class="page-subtitle">记录生活中的美好瞬间，分享日常的小确幸，传递生活的正能量和智慧</p>
+            </div>
+            
+            <!-- 生活分享介绍 -->
+            <section class="life-intro" style="margin-bottom: var(--spacing-xl);">
+                <div class="intro-card" style="background: var(--white); padding: var(--spacing-xl); border-radius: var(--radius-lg); box-shadow: 0 4px 20px var(--shadow); text-align: center;">
+                    <div style="font-size: 4rem; margin-bottom: var(--spacing-lg);">🌻</div>
+                    <h2 style="font-size: var(--font-xxl); margin-bottom: var(--spacing-md); color: var(--primary-color);">
+                        生活的美好，值得被记录
+                    </h2>
+                    <p style="font-size: var(--font-lg); line-height: 1.8; color: var(--text-color); margin-bottom: var(--spacing-lg); max-width: 800px; margin-left: auto; margin-right: auto;">
+                        生活中的快乐往往来自那些看似微不足道的小事情——清晨的第一缕阳光、午后的一杯茶、
+                        朋友的一个微笑、家人的温暖拥抱。在这里，我想和大家分享这些平凡而珍贵的时光。
+                    </p>
+                    <div class="life-stats" style="display: flex; justify-content: center; gap: var(--spacing-xl); flex-wrap: wrap;">
+                        <div>
+                            <div style="font-size: var(--font-xxl); font-weight: bold; color: var(--primary-color);">12</div>
+                            <div style="color: var(--text-light);">篇文章</div>
+                        </div>
+                        <div>
+                            <div style="font-size: var(--font-xxl); font-weight: bold; color: var(--secondary-color);">365</div>
+                            <div style="color: var(--text-light);">天记录</div>
+                        </div>
+                        <div>
+                            <div style="font-size: var(--font-xxl); font-weight: bold; color: var(--primary-color);">∞</div>
+                            <div style="color: var(--text-light);">份美好</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- 文章分类标签 -->
+            <section class="article-categories" style="margin-bottom: var(--spacing-xl);">
+                <h2 class="sr-only">文章分类</h2>
+                <div class="category-tags" style="display: flex; justify-content: center; gap: var(--spacing-sm); flex-wrap: wrap;">
+                    <button class="category-tag active" data-category="all" style="background: var(--primary-color); color: white; border: none; padding: var(--spacing-sm) var(--spacing-lg); border-radius: var(--radius-md); cursor: pointer; transition: all 0.3s ease;">
+                        全部
+                    </button>
+                    <button class="category-tag" data-category="daily" style="background: rgba(255, 107, 107, 0.1); color: var(--primary-color); border: 1px solid var(--primary-color); padding: var(--spacing-sm) var(--spacing-lg); border-radius: var(--radius-md); cursor: pointer; transition: all 0.3s ease;">
+                        日常随笔
+                    </button>
+                    <button class="category-tag" data-category="travel" style="background: rgba(76, 205, 196, 0.1); color: var(--secondary-color); border: 1px solid var(--secondary-color); padding: var(--spacing-sm) var(--spacing-lg); border-radius: var(--radius-md); cursor: pointer; transition: all 0.3s ease;">
+                        旅行见闻
+                    </button>
+                    <button class="category-tag" data-category="food" style="background: rgba(255, 107, 107, 0.1); color: var(--primary-color); border: 1px solid var(--primary-color); padding: var(--spacing-sm) var(--spacing-lg); border-radius: var(--radius-md); cursor: pointer; transition: all 0.3s ease;">
+                        美食分享
+                    </button>
+                    <button class="category-tag" data-category="thoughts" style="background: rgba(76, 205, 196, 0.1); color: var(--secondary-color); border: 1px solid var(--secondary-color); padding: var(--spacing-sm) var(--spacing-lg); border-radius: var(--radius-md); cursor: pointer; transition: all 0.3s ease;">
+                        生活感悟
+                    </button>
+                </div>
+            </section>
+            
+            <!-- 生活分享文章列表 -->
+            <section class="articles-section">
+                <div class="article-grid">
+                    
+                    <!-- 示例文章 1 -->
+                    <article class="article-card" data-category="daily">
+                        <div class="article-image-placeholder" style="background: linear-gradient(45deg, #FF6B6B, #FFE66D); height: 200px; display: flex; align-items: center; justify-content: center; color: white; font-size: 2rem;">
+                            ☀️
+                        </div>
+                        <div class="article-content">
+                            <div class="article-meta">
+                                <time class="article-date" datetime="2024-01-20">2024年1月20日</time>
+                                <span class="article-read-time">3分钟阅读</span>
+                            </div>
+                            <h3 class="article-title">
+                                <a href="articles/morning-sunshine.html">
+                                    清晨的第一缕阳光
+                                </a>
+                            </h3>
+                            <p class="article-excerpt">
+                                今天早上推开窗户，温暖的阳光洒在脸上，那一刻心情特别美好。
+                                想和大家分享这个美丽的清晨，以及阳光给我带来的正能量...
+                            </p>
+                            <div class="article-tags">
+                                <span class="article-tag">日常</span>
+                                <span class="article-tag">阳光</span>
+                                <span class="article-tag">美好</span>
+                            </div>
+                        </div>
+                    </article>
+                    
+                    <!-- 示例文章 2 -->
+                    <article class="article-card" data-category="food">
+                        <div class="article-image-placeholder" style="background: linear-gradient(45deg, #4ECDC4, #96CEB4); height: 200px; display: flex; align-items: center; justify-content: center; color: white; font-size: 2rem;">
+                            🍜
+                        </div>
+                        <div class="article-content">
+                            <div class="article-meta">
+                                <time class="article-date" datetime="2024-01-18">2024年1月18日</time>
+                                <span class="article-read-time">4分钟阅读</span>
+                            </div>
+                            <h3 class="article-title">
+                                <a href="articles/weekend-cooking.html">
+                                    周末的温馨厨房时光
+                                </a>
+                            </h3>
+                            <p class="article-excerpt">
+                                周末在家亲手做了一顿丰盛的晚餐，从买菜到烹饪，每一个步骤都充满了乐趣。
+                                和大家分享这份来自厨房的温暖与满足...
+                            </p>
+                            <div class="article-tags">
+                                <span class="article-tag">美食</span>
+                                <span class="article-tag">周末</span>
+                                <span class="article-tag">家庭</span>
+                            </div>
+                        </div>
+                    </article>
+                    
+                    <!-- 示例文章 3 -->
+                    <article class="article-card" data-category="travel">
+                        <div class="article-image-placeholder" style="background: linear-gradient(45deg, #A8E6CF, #7FCDCD); height: 200px; display: flex; align-items: center; justify-content: center; color: white; font-size: 2rem;">
+                            🌸
+                        </div>
+                        <div class="article-content">
+                            <div class="article-meta">
+                                <time class="article-date" datetime="2024-01-15">2024年1月15日</time>
+                                <span class="article-read-time">5分钟阅读</span>
+                            </div>
+                            <h3 class="article-title">
+                                <a href="articles/spring-park-walk.html">
+                                    春日公园漫步记
+                                </a>
+                            </h3>
+                            <p class="article-excerpt">
+                                春天到了，公园里樱花盛开，漫步其中心情格外舒畅。
+                                记录下这次美妙的公园之行，分享春天带来的希望与活力...
+                            </p>
+                            <div class="article-tags">
+                                <span class="article-tag">春天</span>
+                                <span class="article-tag">公园</span>
+                                <span class="article-tag">樱花</span>
+                            </div>
+                        </div>
+                    </article>
+                    
+                    <!-- 示例文章 4 -->
+                    <article class="article-card" data-category="thoughts">
+                        <div class="article-image-placeholder" style="background: linear-gradient(45deg, #FFEAA7, #FDCB6E); height: 200px; display: flex; align-items: center; justify-content: center; color: white; font-size: 2rem;">
+                            💭
+                        </div>
+                        <div class="article-content">
+                            <div class="article-meta">
+                                <time class="article-date" datetime="2024-01-12">2024年1月12日</time>
+                                <span class="article-read-time">6分钟阅读</span>
+                            </div>
+                            <h3 class="article-title">
+                                <a href="articles/slow-life-philosophy.html">
+                                    慢生活的哲学
+                                </a>
+                            </h3>
+                            <p class="article-excerpt">
+                                在快节奏的现代生活中，我们是否忘记了慢下来感受生活的美好？
+                                分享我对慢生活的理解和实践，希望能给大家一些启发...
+                            </p>
+                            <div class="article-tags">
+                                <span class="article-tag">感悟</span>
+                                <span class="article-tag">慢生活</span>
+                                <span class="article-tag">哲学</span>
+                            </div>
+                        </div>
+                    </article>
+                    
+                    <!-- 示例文章 5 -->
+                    <article class="article-card" data-category="daily">
+                        <div class="article-image-placeholder" style="background: linear-gradient(45deg, #E17055, #FAB1A0); height: 200px; display: flex; align-items: center; justify-content: center; color: white; font-size: 2rem;">
+                            📚
+                        </div>
+                        <div class="article-content">
+                            <div class="article-meta">
+                                <time class="article-date" datetime="2024-01-10">2024年1月10日</time>
+                                <span class="article-read-time">4分钟阅读</span>
+                            </div>
+                            <h3 class="article-title">
+                                <a href="articles/bedtime-reading.html">
+                                    睡前阅读的小时光
+                                </a>
+                            </h3>
+                            <p class="article-excerpt">
+                                每天睡前都会读几页书，这已经成为了我的习惯。
+                                今晚想和大家分享阅读带给我的宁静与思考...
+                            </p>
+                            <div class="article-tags">
+                                <span class="article-tag">阅读</span>
+                                <span class="article-tag">习惯</span>
+                                <span class="article-tag">夜晚</span>
+                            </div>
+                        </div>
+                    </article>
+                    
+                    <!-- 示例文章 6 -->
+                    <article class="article-card" data-category="daily">
+                        <div class="article-image-placeholder" style="background: linear-gradient(45deg, #6C5CE7, #A29BFE); height: 200px; display: flex; align-items: center; justify-content: center; color: white; font-size: 2rem;">
+                            🎵
+                        </div>
+                        <div class="article-content">
+                            <div class="article-meta">
+                                <time class="article-date" datetime="2024-01-08">2024年1月8日</time>
+                                <span class="article-read-time">3分钟阅读</span>
+                            </div>
+                            <h3 class="article-title">
+                                <a href="articles/music-and-mood.html">
+                                    音乐与心情的对话
+                                </a>
+                            </h3>
+                            <p class="article-excerpt">
+                                不同的音乐总能带给我不同的心情体验。
+                                今天想分享几首最近喜欢的歌曲，以及它们背后的故事...
+                            </p>
+                            <div class="article-tags">
+                                <span class="article-tag">音乐</span>
+                                <span class="article-tag">心情</span>
+                                <span class="article-tag">分享</span>
+                            </div>
+                        </div>
+                    </article>
+                    
+                </div>
+                
+                <!-- 分页导航 -->
+                <nav class="pagination" aria-label="文章分页" style="margin-top: var(--spacing-xl); text-align: center;">
+                    <div class="pagination-info" style="margin-bottom: var(--spacing-md); color: var(--text-light);">
+                        显示 1-6 篇，共 12 篇文章
+                    </div>
+                    <div class="pagination-links">
+                        <button class="btn btn-outline" disabled>上一页</button>
+                        <span style="margin: 0 var(--spacing-md); color: var(--text-light);">第 1 页 / 共 2 页</span>
+                        <button class="btn btn-outline">下一页</button>
+                    </div>
+                </nav>
+            </section>
+            
+        </div>
+    </main>
+    
+    <!-- 回到顶部按钮 -->
+    <button class="back-to-top" aria-label="回到顶部" title="回到顶部">
+        ↑
+    </button>
+    
+    <!-- 网站底部 -->
+    <footer class="site-footer" role="contentinfo">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <h3 class="footer-title">开心快乐每一天</h3>
+                    <p class="footer-description">
+                        个人学习分享网站，传递生活正能量，分享成长点滴。
+                        让我们一起在学习和分享中成长，开心快乐每一天！
+                    </p>
+                </div>
+                
+                <div class="footer-links">
+                    <a href="../" class="footer-link">首页</a>
+                    <a href="../about.html" class="footer-link">关于我</a>
+                    <a href="../life/" class="footer-link">生活分享</a>
+                    <a href="../study/" class="footer-link">学习分享</a>
+                    <a href="../work/" class="footer-link">工作分享</a>
+                </div>
+                
+                <div class="footer-legal">
+                    <p>
+                        &copy; 2024 开心快乐每一天 | 
+                        <a href="https://beian.miit.gov.cn" target="_blank" rel="noopener noreferrer">
+                            浙ICP备2025192124号-1
+                        </a> | 
+                        非经营性个人网站
+                    </p>
+                    <p style="margin-top: var(--spacing-sm); font-size: 0.875rem; color: #95A5A6;">
+                        本站内容仅供学习交流使用，如有侵权请联系删除
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- JavaScript Files -->
+    <script src="../assets/js/utils.js"></script>
+    <script src="../assets/js/main.js"></script>
+    
+    <!-- 分类筛选功能 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const categoryTags = document.querySelectorAll('.category-tag');
+            const articleCards = document.querySelectorAll('.article-card');
+            
+            categoryTags.forEach(tag => {
+                tag.addEventListener('click', function() {
+                    const category = this.dataset.category;
+                    
+                    // 更新活跃标签
+                    categoryTags.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // 筛选文章
+                    articleCards.forEach(card => {
+                        if (category === 'all' || card.dataset.category === category) {
+                            card.style.display = 'block';
+                            card.style.animation = 'fadeInUp 0.5s ease forwards';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+    
+    <style>
+        .category-tag:hover {
+            background: var(--primary-color) !important;
+            color: white !important;
+            border-color: var(--primary-color) !important;
+        }
+        
+        .category-tag.active {
+            background: var(--primary-color) !important;
+            color: white !important;
+            border-color: var(--primary-color) !important;
+        }
+    </style>
+</body>
+</html>

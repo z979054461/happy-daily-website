@@ -1,0 +1,62 @@
+# 设置默认行为，如果Git认为文件是文本文件，则自动处理行结尾
+* text=auto
+
+# 明确指定哪些文件始终应该有LF行结尾
+*.html text eol=lf
+*.css text eol=lf
+*.js text eol=lf
+*.json text eol=lf
+*.md text eol=lf
+*.txt text eol=lf
+*.xml text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+
+# 确保这些文件被正确识别为文本文件
+*.html linguist-language=HTML
+*.css linguist-language=CSS
+*.js linguist-language=JavaScript
+
+# 明确指定二进制文件，防止Git尝试进行文本转换
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.webp binary
+*.svg binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.eot binary
+*.otf binary
+*.pdf binary
+*.zip binary
+*.tar binary
+*.gz binary
+*.rar binary
+*.7z binary
+
+# 排除第三方库和生成文件的语言统计
+assets/vendor/* linguist-vendored
+*.min.js linguist-vendored
+*.min.css linguist-vendored
+node_modules/* linguist-vendored
+dist/* linguist-generated
+build/* linguist-generated
+
+# 文档文件
+*.md text
+*.txt text
+README* text
+CHANGELOG* text
+LICENSE* text
+CONTRIBUTING* text
+
+# 配置文件
+*.json text
+*.xml text
+*.yml text
+*.yaml text
+.gitignore text
+.gitattributes text
