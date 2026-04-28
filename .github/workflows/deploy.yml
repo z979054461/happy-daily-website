@@ -29,15 +29,11 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Create config.json for GitHub Pages
-        run: |
-          echo '{ "basePath": "/happy-daily-website/" }' > config.json
-
       - name: Build site
-        run: npm run build
-        env:
-          # Override config.json basePath if needed
-          BASE_PATH: /happy-daily-website/
+        run: |
+          export BASE_PATH=/happy-daily-website/
+          echo '{ "basePath": "/happy-daily-website/" }' > config.json
+          npm run build
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
