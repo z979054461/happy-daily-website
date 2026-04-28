@@ -16,7 +16,17 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT_DIR = join(__dirname);
 const PUBLIC_DIR = join(ROOT_DIR, 'public');
 const DATA_FILE = join(ROOT_DIR, 'data', 'articles.json');
-const BASE_PATH = '/happy-daily-website/';
+// 站点路径配置：从 config.json 读取，或从环境变量 BASE_PATH 覆盖
+// config.json 的 basePath: '/' 或 '/happy-daily-website/'
+const CONFIG_FILE = join(ROOT_DIR, 'config.json');
+let configBasePath = '/';
+try {
+    const config = JSON.parse(readFileSync(CONFIG_FILE, 'utf-8'));
+    configBasePath = config.basePath || '/';
+} catch (e) {
+    // 如果没有 config.json，使用环境变量或默认值
+}
+const BASE_PATH = process.env.BASE_PATH || configBasePath;
 
 marked.setOptions({
     highlight: function(code, lang) {
