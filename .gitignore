@@ -53,7 +53,6 @@ optimized/
 .env.development.local
 .env.test.local
 .env.production.local
-config.json
 
 # 临时文件
 *.tmp
