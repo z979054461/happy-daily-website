@@ -61,3 +61,5 @@ python3 -m http.server 8000
 
 
 _Last updated: 2026-04-28 10:45 UTC_
+
+_Update: 2026-04-28 10:20 UTC - trigger rebuild with correct basePath_
