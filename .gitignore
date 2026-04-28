@@ -28,7 +28,6 @@ yarn-error.log*
 node_modules/
 .npm/
 .yarn/
-package-lock.json
 yarn.lock
 
 # 构建产物
