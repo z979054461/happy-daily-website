@@ -30,7 +30,11 @@ jobs:
         run: npm install
 
       - name: Build site
-        run: BASE_PATH=/happy-daily-website/ npm run build
+        run: |
+          rm -f config.json
+          export BASE_PATH=/happy-daily-website/
+          echo "BASE_PATH=$BASE_PATH"
+          node build.mjs
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
