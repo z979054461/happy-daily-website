@@ -1,79 +1,438 @@
 
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>科技速递 - 开心快乐每一天</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: { sans: ['"Inter"', 'system-ui', 'sans-serif'] },
-                    colors: { primary: '#3b82f6', accent: '#8b5cf6' }
-                }
-            }
-        }
-    </script>
+    <base href="/happy-daily-website/">
+    <title>科技速递</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-        body { font-family: 'Inter', system-ui, sans-serif; }
-        .prose p { margin-bottom: 1.5em; line-height: 1.8; }
-        .prose h2 { font-size: 1.5rem; font-weight: 700; margin-top: 2em; margin-bottom: 1em; color: #1e293b; }
-        .prose blockquote { border-left: 4px solid #3b82f6; padding-left: 1em; color: #64748b; font-style: italic; }
-        .prose pre { background: #282c34; padding: 1em; border-radius: 0.5em; overflow-x: auto; margin-bottom: 1.5em; }
-        .prose pre code { background: none; padding: 0; }
-        .glass { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(10px); }
-    </style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap');
+    
+    /* ========== CSS Variables ========== */
+    :root {
+        --primary: #2563eb;
+        --primary-light: #3b82f6;
+        --accent: #7c3aed;
+        --text-link: #2563eb;
+    }
+    
+    [data-theme="dark"] {
+        --bg: #0f172a;
+        --bg-secondary: #1e293b;
+        --bg-card: rgba(30, 41, 59, 0.5);
+        --bg-nav: rgba(15, 23, 42, 0.8);
+        --text: #e2e8f0;
+        --text-secondary: #94a3b8;
+        --text-muted: #64748b;
+        --border: rgba(148, 163, 184, 0.1);
+        --shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
+        --glow: rgba(59, 130, 246, 0.1);
+        --tag-bg: rgba(37, 99, 235, 0.15);
+        --tag-text: #60a5fa;
+        --heading-grad-start: #e2e8f0;
+        --heading-grad-end: #60a5fa;
+    }
+    
+    [data-theme="light"] {
+        --bg: #f8fafc;
+        --bg-secondary: #f1f5f9;
+        --bg-card: rgba(255, 255, 255, 0.9);
+        --bg-nav: rgba(255, 255, 255, 0.85);
+        --text: #0f172a;
+        --text-secondary: #475569;
+        --text-muted: #94a3b8;
+        --border: rgba(0, 0, 0, 0.08);
+        --shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+        --glow: rgba(59, 130, 246, 0.05);
+        --tag-bg: rgba(37, 99, 235, 0.08);
+        --tag-text: #2563eb;
+        --heading-grad-start: #0f172a;
+        --heading-grad-end: #2563eb;
+    }
+    
+    /* ========== Reset & Base ========== */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    html {
+        scroll-behavior: smooth;
+        -webkit-text-size-adjust: 100%;
+    }
+    
+    body {
+        font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        line-height: 1.7;
+        transition: background 0.3s ease, color 0.3s ease;
+        min-height: 100vh;
+    }
+    
+    /* ========== 背景装饰 ========== */
+    .bg-glow {
+        position: fixed; inset: 0; z-index: -1; pointer-events: none;
+        background: radial-gradient(ellipse at 20% 50%, var(--glow) 0%, transparent 50%),
+                    radial-gradient(ellipse at 80% 20%, rgba(124, 58, 237, 0.05) 0%, transparent 50%);
+    }
+    
+    /* ========== 导航栏 (修复布局) ========== */
+    .nav {
+        position: sticky; top: 0; z-index: 50;
+        background: var(--bg-nav);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+        max-width: 1100px; margin: 0 auto;
+        padding: 0 20px; height: 64px;
+        display: flex; align-items: center; justify-content: space-between;
+    }
+    .logo {
+        font-size: 1.15rem; font-weight: 800; text-decoration: none; color: var(--text);
+        letter-spacing: -0.5px;
+    }
+    .logo span { color: var(--primary); }
+    
+    .nav-right { display: flex; align-items: center; gap: 16px; }
+    
+    .nav-links { display: flex; gap: 4px; }
+    .nav-link {
+        padding: 6px 14px; border-radius: 8px; text-decoration: none;
+        color: var(--text-secondary); font-size: 0.875rem; font-weight: 500;
+        transition: all 0.2s ease; white-space: nowrap;
+    }
+    .nav-link:hover { color: var(--text); background: var(--glow); }
+    .nav-link.active { color: var(--primary); background: var(--tag-bg); font-weight: 600; }
+    
+    .theme-btn {
+        width: 36px; height: 36px; border-radius: 8px; border: 1px solid var(--border);
+        background: transparent; color: var(--text); cursor: pointer;
+        display: flex; align-items: center; justify-content: center; font-size: 1rem;
+        transition: all 0.2s ease; flex-shrink: 0;
+    }
+    .theme-btn:hover { background: var(--glow); border-color: var(--primary); }
+    
+    .menu-toggle { display: none; background: none; border: none; color: var(--text); font-size: 1.25rem; cursor: pointer; padding: 4px; }
+    
+    /* ========== 主容器 ========== */
+    .container { max-width: 1100px; margin: 0 auto; padding: 32px 20px; }
+    
+    /* ========== Hero ========== */
+    .hero { text-align: center; padding: 48px 0 40px; }
+    .hero h1 {
+        font-size: clamp(1.75rem, 5vw, 2.5rem); font-weight: 900; line-height: 1.2;
+        letter-spacing: -0.5px; margin-bottom: 16px;
+        background: linear-gradient(135deg, var(--heading-grad-start), var(--heading-grad-end));
+        -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .hero p {
+        font-size: 1rem; color: var(--text-secondary); max-width: 560px; margin: 0 auto;
+        line-height: 1.7;
+    }
+    
+    /* ========== 文章网格 ========== */
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+    
+    .card {
+        background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px;
+        padding: 24px; display: flex; flex-direction: column;
+        transition: all 0.25s ease; backdrop-filter: blur(8px);
+    }
+    .card:hover {
+        transform: translateY(-3px);
+        border-color: var(--primary);
+        box-shadow: var(--shadow);
+    }
+    .card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+    .tag {
+        padding: 4px 10px; border-radius: 6px; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.3px;
+    }
+    .tag-ai { background: rgba(139, 92, 246, 0.15); color: #a78bfa; }
+    .tag-tech { background: rgba(6, 182, 212, 0.15); color: #22d3ee; }
+    .tag-life { background: rgba(34, 197, 94, 0.15); color: #4ade80; }
+    .tag-tools { background: rgba(251, 146, 60, 0.15); color: #fb923c; }
+    [data-theme="light"] .tag-ai { background: rgba(139, 92, 246, 0.1); color: #7c3aed; }
+    [data-theme="light"] .tag-tech { background: rgba(6, 182, 212, 0.1); color: #0891b2; }
+    [data-theme="light"] .tag-life { background: rgba(34, 197, 94, 0.1); color: #16a34a; }
+    [data-theme="light"] .tag-tools { background: rgba(251, 146, 60, 0.1); color: #ea580c; }
+    .card-date { font-size: 0.75rem; color: var(--text-muted); font-family: ui-monospace, monospace; }
+    .card h3 {
+        font-size: 1.05rem; font-weight: 700; line-height: 1.5; margin-bottom: 16px;
+        flex-grow: 1;
+    }
+    .card h3 a {
+        text-decoration: none; color: var(--text); transition: color 0.2s;
+    }
+    .card h3 a:hover { color: var(--primary); }
+    .card-excerpt {
+        font-size: 0.85rem; color: var(--text-muted); line-height: 1.6;
+        margin-bottom: 16px; display: -webkit-box; -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .card-footer {
+        margin-top: auto; padding-top: 16px; border-top: 1px solid var(--border);
+        display: flex; align-items: center; justify-content: space-between;
+    }
+    .card-meta { font-size: 0.8rem; color: var(--text-muted); }
+    .card-link {
+        font-size: 0.8rem; color: var(--primary); font-weight: 500; text-decoration: none;
+        display: inline-flex; align-items: center; gap: 4px; transition: gap 0.2s;
+    }
+    .card-link:hover { gap: 8px; }
+    
+    /* ========== 文章页 ========== */
+    .article { max-width: 720px; margin: 0 auto; }
+    .article-header { text-align: center; padding: 40px 0 32px; border-bottom: 1px solid var(--border); margin-bottom: 36px; }
+    .article-header .tag { margin-bottom: 16px; display: inline-block; }
+    .article-header h1 { font-size: clamp(1.4rem, 3vw, 2rem); font-weight: 900; line-height: 1.3; margin-bottom: 16px; }
+    .article-meta { color: var(--text-muted); font-size: 0.85rem; display: flex; align-items: center; justify-content: center; gap: 12px; }
+    
+    .content { font-size: 1rem; line-height: 1.85; color: var(--text-secondary); }
+    .content h2 { font-size: 1.4rem; font-weight: 800; color: var(--text); margin: 2em 0 0.8em; }
+    .content h3 { font-size: 1.15rem; font-weight: 700; color: var(--text); margin: 1.5em 0 0.6em; }
+    .content p { margin-bottom: 1.2em; }
+    .content a { color: var(--text-link); text-decoration: underline; text-decoration-color: var(--border); text-underline-offset: 3px; }
+    .content a:hover { text-decoration-color: var(--text-link); }
+    .content blockquote { border-left: 3px solid var(--primary); padding-left: 1.2em; color: var(--text-muted); margin: 1.5em 0; }
+    .content pre { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 10px; padding: 16px; overflow-x: auto; margin: 1.5em 0; }
+    .content code { font-family: ui-monospace, 'SF Mono', monospace; font-size: 0.85em; }
+    .content :not(pre) > code { background: var(--bg-secondary); padding: 2px 6px; border-radius: 4px; }
+    .content ul, .content ol { padding-left: 1.5em; margin-bottom: 1.2em; }
+    
+    /* ========== 关于页 ========== */
+    .about { max-width: 640px; margin: 0 auto; text-align: center; }
+    .about-hero { padding: 40px 0 32px; }
+    .about h1 { font-size: 1.8rem; font-weight: 900; margin-bottom: 12px; }
+    .about p { color: var(--text-secondary); font-size: 1rem; line-height: 1.7; }
+    .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin: 36px 0; }
+    .feature { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 24px 16px; transition: all 0.25s; }
+    .feature:hover { transform: translateY(-2px); border-color: var(--primary); }
+    .feature-icon { font-size: 1.8rem; margin-bottom: 12px; }
+    .feature h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .feature p { font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; }
+    
+    /* ========== 页脚 ========== */
+    .footer { border-top: 1px solid var(--border); padding: 24px 0; text-align: center; color: var(--text-muted); font-size: 0.8rem; margin-top: 60px; }
+    .footer a { color: var(--text-secondary); text-decoration: none; }
+    .footer a:hover { color: var(--primary); }
+    
+    /* ========== 空状态 ========== */
+    .empty { text-align: center; padding: 60px 20px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; }
+    .empty p { color: var(--text-muted); font-size: 1rem; }
+    
+    /* ========== 移动端 ========== */
+    @media (max-width: 768px) {
+        .nav-inner { height: 56px; padding: 0 16px; }
+        .nav-links {
+            display: none; position: absolute; top: 56px; left: 0; right: 0;
+            background: var(--bg-nav); backdrop-filter: blur(12px);
+            flex-direction: column; padding: 12px; gap: 4px;
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-links.open { display: flex; }
+        .menu-toggle { display: block; }
+        .hero { padding: 32px 0 24px; }
+        .hero h1 { font-size: 1.6rem; }
+        .grid { grid-template-columns: 1fr; gap: 16px; }
+        .container { padding: 24px 16px; }
+        .card { padding: 20px; }
+    }
+    
+    /* ========== 动画 ========== */
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+    .fade-up { animation: fadeUp 0.5s ease forwards; opacity: 0; }
+</style>
+    <script>
+        const initTheme = () => {
+            const saved = localStorage.getItem('theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', saved);
+        };
+        const toggleTheme = () => {
+            const c = document.documentElement.getAttribute('data-theme');
+            const n = c === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', n);
+            localStorage.setItem('theme', n);
+            document.querySelector('.theme-icon').textContent = n === 'dark' ? '🌙' : '☀️';
+        };
+        document.addEventListener('DOMContentLoaded', () => {
+            initTheme();
+            const c = document.documentElement.getAttribute('data-theme');
+            const icon = document.querySelector('.theme-icon');
+            if (icon) icon.textContent = c === 'dark' ? '🌙' : '☀️';
+        });
+    </script>
 </head>
-<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
-    <header class="glass sticky top-0 z-50 border-b border-slate-200 shadow-sm">
-        <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-            <a href="/" class="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent hover:opacity-90 transition">
-                开心快乐每一天
-            </a>
-            <nav class="hidden md:flex gap-6">
-                <a href="/" class="nav-link text-slate-600 hover:text-blue-600 font-medium transition ">首页</a>
-                <a href="/life.html" class="nav-link text-slate-600 hover:text-blue-600 font-medium transition ">生活</a>
-                <a href="/tech.html" class="nav-link text-slate-600 hover:text-blue-600 font-medium transition !text-blue-600">科技</a>
-                <a href="/tools.html" class="nav-link text-slate-600 hover:text-blue-600 font-medium transition ">效率</a>
-                <a href="/ai.html" class="nav-link text-slate-600 hover:text-blue-600 font-medium transition ">AI 前沿</a>
-                <a href="/about.html" class="nav-link text-slate-600 hover:text-blue-600 font-medium transition ">关于</a>
-            </nav>
+<body>
+    <div class="bg-glow"></div>
+    <nav class="nav">
+        <div class="nav-inner">
+            <a href="/happy-daily-website/" class="logo">Happy<span>Daily</span></a>
+            <div class="nav-right">
+                <button class="menu-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+                <div class="nav-links">
+                    <a href="/happy-daily-website/" class="nav-link ">首页</a>
+                    <a href="/happy-daily-website/life.html" class="nav-link ">生活</a>
+                    <a href="/happy-daily-website/tech.html" class="nav-link active">科技</a>
+                    <a href="/happy-daily-website/tools.html" class="nav-link ">效率</a>
+                    <a href="/happy-daily-website/ai.html" class="nav-link ">AI</a>
+                    <a href="/happy-daily-website/about.html" class="nav-link ">关于</a>
+                </div>
+                <button class="theme-btn" onclick="toggleTheme()" aria-label="切换主题">
+                    <span class="theme-icon">🌙</span>
+                </button>
+            </div>
         </div>
-    </header>
-
-    <main class="flex-grow max-w-6xl mx-auto px-6 py-12 w-full">
+    </nav>
+    <main class="container">
         
-    <section class="text-center mb-16 animate-fade-in">
-        <h1 class="text-4xl md:text-5xl font-extrabold mb-6 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-500 bg-clip-text text-transparent pb-2">
-            记录生活与成长的点滴
-        </h1>
-        <p class="text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
-            这里有关于科技趋势的观察、AI 前沿的探索、生活灵感的迸发以及效率工具的分享。<br>
-            愿我们在奔忙中留一寸柔软，在喧嚣里守一份清醒。
-        </p>
+    <section class="hero fade-up">
+        <h1>科技速递</h1>
+        <p>聚焦消费电子、硬件创新与科技趋势，用客观视角解读产品进化。</p>
     </section>
     
-    
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div class="grid">
             
-                <article class="bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-slate-100 flex flex-col h-full group">
-                    <div class="flex items-center justify-between mb-4">
-                        <span class="px-3 py-1 text-xs font-bold rounded-full
-                            bg-purple-100 text-purple-700">
-                            科技速递
-                        </span>
-                        <span class="text-xs text-slate-400">2026/4/15</span>
+                <article class="card fade-up" style="animation-delay: 0s">
+                    <div class="card-header">
+                        <span class="tag tag-tech">科技</span>
+                        <span class="card-date">4/26/2026</span>
                     </div>
-                    <h3 class="text-lg font-bold mb-3 leading-snug group-hover:text-blue-600 transition-colors">
-                        <a href="/posts/tech-1776221974458.html">近期，“AI PC”（人工智能电脑）成为消费电子与办公硬件领域的重要趋势。与传统电脑不同，AI PC在硬件架构中集成专用神经网络处理单元（NPU），在操作系统层深度适配本地大模型与AI服务，实现计算范式从“云端集中”向“端侧协同”的演进。</a>
-                    </h3>
-                    <div class="mt-auto pt-4 flex items-center justify-between text-sm text-slate-500 border-t border-slate-100">
-                        <span>📅 2 min read</span>
-                        <span class="text-blue-500 font-medium group-hover:underline">阅读全文 →</span>
+                    <h3><a href="/happy-daily-website/posts/tech-latest.html">空间计算走进日常</a></h3>
+                    <p class="card-excerpt">空间计算正在从极客玩具变成真正的生产力工具，在工业、医疗、教育领域加速落地。</p>
+                    <div class="card-footer">
+                        <span class="card-meta">⏱ 3 min</span>
+                        <a href="/happy-daily-website/posts/tech-latest.html" class="card-link">阅读 <span>→</span></a>
+                    </div>
+                </article>
+            
+                <article class="card fade-up" style="animation-delay: 0.05s">
+                    <div class="card-header">
+                        <span class="tag tag-tech">科技</span>
+                        <span class="card-date">2026/4/25</span>
+                    </div>
+                    <h3><a href="/happy-daily-website/posts/tech-1777082569862.html">端侧AI手机技术解析</a></h3>
+                    <p class="card-excerpt">近年来，端侧人工智能手机成为消费电子领域的重要趋势。与传统依赖云端算力的AI功能不同，端侧AI手机将大语言模型及多模态算法直接部署于设备本地芯片。行业联盟已逐步建立统一的性能评测标准，推动软硬件协同优</p>
+                    <div class="card-footer">
+                        <span class="card-meta">⏱ 2 min</span>
+                        <a href="/happy-daily-website/posts/tech-1777082569862.html" class="card-link">阅读 <span>→</span></a>
+                    </div>
+                </article>
+            
+                <article class="card fade-up" style="animation-delay: 0.1s">
+                    <div class="card-header">
+                        <span class="tag tag-tech">科技</span>
+                        <span class="card-date">2026/4/24</span>
+                    </div>
+                    <h3><a href="/happy-daily-website/posts/tech-1776996301138.html">端侧人工智能电脑趋势</a></h3>
+                    <p class="card-excerpt">端侧智能电脑正成为消费电子与办公设备领域的重要趋势。与传统依赖云端服务器的计算模式不同，新一代AI电脑在主板中集成了专用神经网络处理单元，可在设备本地高效运行大语言模型与多模态算法。这一架构转变带来了</p>
+                    <div class="card-footer">
+                        <span class="card-meta">⏱ 2 min</span>
+                        <a href="/happy-daily-website/posts/tech-1776996301138.html" class="card-link">阅读 <span>→</span></a>
+                    </div>
+                </article>
+            
+                <article class="card fade-up" style="animation-delay: 0.15000000000000002s">
+                    <div class="card-header">
+                        <span class="tag tag-tech">科技</span>
+                        <span class="card-date">2026/4/23</span>
+                    </div>
+                    <h3><a href="/happy-daily-website/posts/tech-1776910310956.html">端侧人工智能电脑成新趋势</a></h3>
+                    <p class="card-excerpt">端侧AI电脑是近期科技市场的重要发展方向，指内置专用神经网络处理单元的个人计算机。与传统依赖云端算力的设备不同，该类产品将生成式模型直接部署于本地硬件，实现低延迟、高稳定性的智能交互。目前主流厂商已密</p>
+                    <div class="card-footer">
+                        <span class="card-meta">⏱ 2 min</span>
+                        <a href="/happy-daily-website/posts/tech-1776910310956.html" class="card-link">阅读 <span>→</span></a>
+                    </div>
+                </article>
+            
+                <article class="card fade-up" style="animation-delay: 0.2s">
+                    <div class="card-header">
+                        <span class="tag tag-tech">科技</span>
+                        <span class="card-date">2026/4/22</span>
+                    </div>
+                    <h3><a href="/happy-daily-website/posts/tech-1776823906930.html">人工智能电脑趋势解析</a></h3>
+                    <p class="card-excerpt">近期，人工智能电脑成为消费电子与产业界的核心焦点。与传统个人电脑不同，该设备在主板集成专用神经网络处理单元，并预装轻量化端侧大模型，实现算力向本地迁移。其兴起得益于半导体工艺迭代、模型压缩技术突破，以</p>
+                    <div class="card-footer">
+                        <span class="card-meta">⏱ 2 min</span>
+                        <a href="/happy-daily-website/posts/tech-1776823906930.html" class="card-link">阅读 <span>→</span></a>
+                    </div>
+                </article>
+            
+                <article class="card fade-up" style="animation-delay: 0.25s">
+                    <div class="card-header">
+                        <span class="tag tag-tech">科技</span>
+                        <span class="card-date">2026/4/21</span>
+                    </div>
+                    <h3><a href="/happy-daily-website/posts/tech-1776737300596.html">端侧智能计算新趋势</a></h3>
+                    <p class="card-excerpt">近期，消费电子与算力架构正经历从云端向终端迁移的显著转变，端侧大模型已成为行业核心发展方向。该趋势以新一代智能终端为载体，将经过轻量化压缩的通用模型直接部署于本地芯片。其技术逻辑在于依托专用神经网络处</p>
+                    <div class="card-footer">
+                        <span class="card-meta">⏱ 2 min</span>
+                        <a href="/happy-daily-website/posts/tech-1776737300596.html" class="card-link">阅读 <span>→</span></a>
+                    </div>
+                </article>
+            
+                <article class="card fade-up" style="animation-delay: 0.30000000000000004s">
+                    <div class="card-header">
+                        <span class="tag tag-tech">科技</span>
+                        <span class="card-date">2026/4/20</span>
+                    </div>
+                    <h3><a href="/happy-daily-website/posts/tech-1776654441760.html">在实际应用中，AI PC已支持文档智能摘要、多语言实时翻译、...</a></h3>
+                    <p class="card-excerpt">从客观评估来看，AI PC的优势在于离线可用、响应迅速且减少外部数据传输。但需注意：本地模型在复杂推理与长文本处理上仍弱于云端大模型；部分AI功能依赖特定软件生态，跨平台兼容性尚在优化中。此外，NPU</p>
+                    <div class="card-footer">
+                        <span class="card-meta">⏱ 1 min</span>
+                        <a href="/happy-daily-website/posts/tech-1776654441760.html" class="card-link">阅读 <span>→</span></a>
+                    </div>
+                </article>
+            
+                <article class="card fade-up" style="animation-delay: 0.35000000000000003s">
+                    <div class="card-header">
+                        <span class="tag tag-tech">科技</span>
+                        <span class="card-date">2026/4/17</span>
+                    </div>
+                    <h3><a href="/happy-daily-website/posts/tech-1776391448164.html">折叠屏手机是近两年持续升温的科技产品趋势。依托柔性OLED屏...</a></h3>
+                    <p class="card-excerpt">在实用层面，折叠屏的核心价值在于交互效率的优化。展开状态支持原生分屏、悬浮窗与跨应用拖拽，适合移动办公、数据对比、电子批注与沉浸式阅读；合拢状态下外屏保留完整手机功能，满足单手通话、扫码与快捷操作。各</p>
+                    <div class="card-footer">
+                        <span class="card-meta">⏱ 2 min</span>
+                        <a href="/happy-daily-website/posts/tech-1776391448164.html" class="card-link">阅读 <span>→</span></a>
+                    </div>
+                </article>
+            
+                <article class="card fade-up" style="animation-delay: 0.4s">
+                    <div class="card-header">
+                        <span class="tag tag-tech">科技</span>
+                        <span class="card-date">2026/4/16</span>
+                    </div>
+                    <h3><a href="/happy-daily-website/posts/tech-1776304899514.html">近期，“AI PC”（人工智能个人电脑）成为科技行业的重要趋...</a></h3>
+                    <p class="card-excerpt">该产品的核心特点是“端侧AI推理”。NPU与CPU、GPU协同调度，显著降低AI任务的功耗与响应延迟。主流机型已支持语音转写、文档摘要、图像生成、代码补全等功能，多数操作可在断网或弱网环境下完成。厂商</p>
+                    <div class="card-footer">
+                        <span class="card-meta">⏱ 2 min</span>
+                        <a href="/happy-daily-website/posts/tech-1776304899514.html" class="card-link">阅读 <span>→</span></a>
+                    </div>
+                </article>
+            
+                <article class="card fade-up" style="animation-delay: 0.45s">
+                    <div class="card-header">
+                        <span class="tag tag-tech">科技速递</span>
+                        <span class="card-date">2026/4/15</span>
+                    </div>
+                    <h3><a href="/happy-daily-website/posts/tech-1776221974458.html">近期，“AI PC”（人工智能电脑）成为消费电子与办公硬件领...</a></h3>
+                    <p class="card-excerpt">该技术的核心价值在于效率与安全的双重提升。NPU可独立承担语音识别、图像增强、文档摘要、代码辅助等高频任务，大幅降低主处理器负载，使整机功耗下降15%至30%，续航表现更稳定。主流系统已提供原生</p>
+                    <div class="card-footer">
+                        <span class="card-meta">⏱ 2 min</span>
+                        <a href="/happy-daily-website/posts/tech-1776221974458.html" class="card-link">阅读 <span>→</span></a>
+                    </div>
+                </article>
+            
+                <article class="card fade-up" style="animation-delay: 0.5s">
+                    <div class="card-header">
+                        <span class="tag tag-tech">科技</span>
+                        <span class="card-date">4/28/2026</span>
+                    </div>
+                    <h3><a href="/happy-daily-website/posts/tech-1777341664499.html">MicroLED显示技术加速普及</a></h3>
+                    <p class="card-excerpt">MicroLED显示技术突破巨量转移瓶颈，良率提升至95%以上，正从大尺寸电视和车载领域加速普及。</p>
+                    <div class="card-footer">
+                        <span class="card-meta">⏱ 3 min</span>
+                        <a href="/happy-daily-website/posts/tech-1777341664499.html" class="card-link">阅读 <span>→</span></a>
                     </div>
                 </article>
             
@@ -81,11 +440,8 @@
     
 
     </main>
-
-    <footer class="border-t border-slate-200 bg-white py-8 mt-12">
-        <div class="max-w-6xl mx-auto px-6 text-center text-slate-500 text-sm">
-            <p>&copy; 2026 开心快乐每一天 | <a href="https://beian.miit.gov.cn/" target="_blank" class="hover:text-blue-600 transition">浙ICP备2025192124号-1</a></p>
-        </div>
+    <footer class="footer">
+        <p>&copy; 2026 Happy Daily · <a href="https://beian.miit.gov.cn/" target="_blank">浙ICP备2025192124号-1</a></p>
     </footer>
 </body>
 </html>
