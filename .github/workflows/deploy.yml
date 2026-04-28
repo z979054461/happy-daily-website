@@ -30,9 +30,9 @@ jobs:
         run: npm install
 
       - name: Build site
-        run: |
-          echo '{ "basePath": "/happy-daily-website/" }' > config.json
-          npm run build
+        run: npm run build
+        env:
+          BASE_PATH: /happy-daily-website/
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
