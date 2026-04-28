@@ -26,7 +26,9 @@ try {
 } catch (e) {
     // 如果没有 config.json，使用环境变量或默认值
 }
-const BASE_PATH = process.env.BASE_PATH || configBasePath;
+// Prioritize environment variable, then config.json, then default to root
+const BASE_PATH = process.env.BASE_PATH || configBasePath || '/';
+console.log(`[SSG] BASE_PATH: ${BASE_PATH}`);
 
 marked.setOptions({
     highlight: function(code, lang) {
