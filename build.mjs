@@ -26,9 +26,13 @@ try {
 } catch (e) {
     // 如果没有 config.json，使用环境变量或默认值
 }
-// Prioritize environment variable, then config.json, then default to root
-const BASE_PATH = process.env.BASE_PATH || configBasePath || '/';
-console.log(`[SSG] BASE_PATH: ${BASE_PATH}`);
+// Detect environment and set appropriate base path
+let BASE_PATH = process.env.BASE_PATH || configBasePath || '/';
+// GitHub Actions sets CI=true, use this to detect and override
+if (process.env.CI && !process.env.BASE_PATH) {
+    BASE_PATH = '/happy-daily-website/';
+}
+console.log(`[SSG] BASE_PATH: ${BASE_PATH} (CI: ${process.env.CI}, env BASE_PATH: ${process.env.BASE_PATH})`);
 
 marked.setOptions({
     highlight: function(code, lang) {
