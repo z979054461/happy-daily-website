@@ -116,3 +116,6 @@ jspm_packages/
 
 # Serverless directories
 .serverless
+# Build output
+public/
+node_modules/
