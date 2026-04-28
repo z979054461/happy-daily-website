@@ -117,3 +117,4 @@ jspm_packages/
 # Build output
 public/
 node_modules/
+config.json

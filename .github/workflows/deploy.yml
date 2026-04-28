@@ -11,8 +11,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -24,16 +22,17 @@ jobs:
         run: npm install
 
       - name: Create config.json
-        run: echo '{ "basePath": "/happy-daily-website/" }' > config.json
+        run: echo '{"basePath":"/happy-daily-website/"}' > config.json
 
       - name: Build site
         run: npm run build
 
       - name: Deploy
         run: |
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          rsync -a --exclude='.git' --exclude='node_modules' --exclude='.github' --exclude='*.md' --exclude='package*.json' --exclude='build.mjs' --exclude='config.json' --exclude='data/' public/ ./
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          cp public/*.html ./
+          mkdir -p posts && cp public/posts/*.html posts/
           git add -A
           if git diff --staged --quiet; then
             echo "Site is up to date."
