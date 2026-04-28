@@ -5,20 +5,20 @@ on:
     branches: [ main ]
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write
 
 concurrency:
   group: "pages"
   cancel-in-progress: true
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -29,25 +29,22 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Create config.json for GitHub Pages
+        run: echo '{ "basePath": "/happy-daily-website/" }' > config.json
+
       - name: Build site
+        run: npm run build
+
+      - name: Deploy to Main Branch
         run: |
-          rm -f config.json
-          export BASE_PATH=/happy-daily-website/
-          echo "BASE_PATH=$BASE_PATH"
-          node build.mjs
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: './public'
-
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          rsync -a --exclude='.git' --exclude='node_modules' --exclude='.github' --exclude='*.md' --exclude='package*.json' --exclude='build.mjs' --exclude='config.json' --exclude='data/' public/ ./
+          git add -A
+          if git diff --staged --quiet; then
+            echo "✅ Site is up to date."
+          else
+            git commit -m "🚀 Auto-deploy site updates"
+            git push origin main
+            echo "✅ Site deployed successfully!"
+          fi
