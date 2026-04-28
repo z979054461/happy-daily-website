@@ -31,7 +31,6 @@ jobs:
 
       - name: Build site
         run: |
-          export BASE_PATH=/happy-daily-website/
           echo '{ "basePath": "/happy-daily-website/" }' > config.json
           npm run build
 
