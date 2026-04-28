@@ -4,13 +4,6 @@ on:
   push:
     branches: [ main ]
 
-permissions:
-  contents: write
-
-concurrency:
-  group: "pages"
-  cancel-in-progress: true
-
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -42,9 +35,9 @@ jobs:
           rsync -a --exclude='.git' --exclude='node_modules' --exclude='.github' --exclude='*.md' --exclude='package*.json' --exclude='build.mjs' --exclude='config.json' --exclude='data/' public/ ./
           git add -A
           if git diff --staged --quiet; then
-            echo "✅ Site is up to date."
+            echo "Site is up to date."
           else
-            git commit -m "🚀 Auto-deploy site updates"
+            git commit -m "Auto-deploy site updates"
             git push origin main
-            echo "✅ Site deployed successfully!"
+            echo "Site deployed successfully!"
           fi
