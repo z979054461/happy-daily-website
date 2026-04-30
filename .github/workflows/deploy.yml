@@ -1,18 +1,16 @@
 name: Deploy to GitHub Pages
 
 on:
-  push:
-    branches: [ main ]
   workflow_dispatch:
 
 jobs:
   build-and-deploy:
-    # Skip if commit message contains Auto-deploy (to prevent infinite loop)
-    if: "!contains(github.event.head_commit.message, 'Auto-deploy')"
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -41,6 +39,6 @@ jobs:
             echo "Site is up to date."
           else
             git commit -m "Auto-deploy site updates"
-            git push origin main
+            git push https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git main
             echo "Site deployed successfully!"
           fi
