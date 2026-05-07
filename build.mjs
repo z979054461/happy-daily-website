@@ -286,6 +286,44 @@ const globalStyles = `
     /* ========== 动画 ========== */
     @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
     .fade-up { animation: fadeUp 0.5s ease forwards; opacity: 0; }
+    
+    /* ========== 时间轴 ========== */
+    .timeline { position: relative; max-width: 900px; margin: 0 auto; padding: 20px 0; }
+    .timeline::before {
+        content: ''; position: absolute; left: 50%; top: 0; bottom: 0; width: 2px;
+        background: linear-gradient(to bottom, var(--primary), var(--accent)); transform: translateX(-50%);
+    }
+    .timeline-date { text-align: center; margin: 32px 0 24px; position: relative; z-index: 1; }
+    .timeline-date span {
+        display: inline-block; padding: 8px 20px; background: var(--bg-card); border: 1px solid var(--border);
+        border-radius: 20px; font-size: 0.9rem; font-weight: 600; color: var(--text);
+        backdrop-filter: blur(8px); box-shadow: var(--shadow);
+    }
+    .timeline-item { display: flex; margin-bottom: 24px; position: relative; }
+    .timeline-item:nth-child(odd) { flex-direction: row-reverse; }
+    .timeline-item::before {
+        content: ''; position: absolute; left: 50%; top: 24px; width: 12px; height: 12px;
+        background: var(--primary); border-radius: 50%; transform: translateX(-50%); border: 3px solid var(--bg); z-index: 2;
+    }
+    .timeline-content {
+        width: calc(50% - 40px); background: var(--bg-card); border: 1px solid var(--border);
+        border-radius: 12px; padding: 16px; transition: all 0.25s ease;
+    }
+    .timeline-content:hover { transform: translateY(-2px); border-color: var(--primary); box-shadow: var(--shadow); }
+    .timeline-item:nth-child(odd) .timeline-content { margin-right: 40px; }
+    .timeline-item:nth-child(even) .timeline-content { margin-left: 40px; }
+    .timeline-content .tag { margin-bottom: 8px; display: inline-block; }
+    .timeline-content h4 { font-size: 0.95rem; font-weight: 600; margin-bottom: 8px; line-height: 1.4; }
+    .timeline-content h4 a { text-decoration: none; color: var(--text); transition: color 0.2s; }
+    .timeline-content h4 a:hover { color: var(--primary); }
+    .timeline-content p { font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; margin: 0; }
+    @media (max-width: 768px) {
+        .timeline::before { left: 20px; }
+        .timeline-item { flex-direction: row !important; }
+        .timeline-item::before { left: 20px; transform: none; }
+        .timeline-content { width: calc(100% - 60px); margin-left: 40px !important; margin-right: 0 !important; }
+        .timeline-date { text-align: left; padding-left: 40px; }
+    }
 `;
 
 // ==================== 页面模板 ====================
@@ -355,20 +393,29 @@ const homeTmpl = `
         <p><%= heroDesc %></p>
     </section>
     <% if (articles && articles.length > 0) { %>
-        <div class="grid">
-            <% articles.forEach((a, i) => { %>
-                <article class="card fade-up" style="animation-delay: <%= i * 0.05 %>s">
-                    <div class="card-header">
-                        <span class="tag tag-<%= a.topic %>"><%= a.category %></span>
-                        <span class="card-date"><%= a.date %></span>
+        <% 
+        // 按日期分组
+        const grouped = {};
+        articles.forEach(a => {
+            if (!grouped[a.date]) grouped[a.date] = [];
+            grouped[a.date].push(a);
+        });
+        const dates = Object.keys(grouped).sort((a, b) => new Date(b) - new Date(a));
+        %>
+        <div class="timeline">
+            <% dates.forEach((date, dateIdx) => { %>
+                <div class="timeline-date fade-up" style="animation-delay: <%= dateIdx * 0.1 %>s">
+                    <span><%= date %></span>
+                </div>
+                <% grouped[date].forEach((a, i) => { %>
+                    <div class="timeline-item fade-up" style="animation-delay: <%= (dateIdx * 0.1) + (i * 0.05) %>s">
+                        <div class="timeline-content">
+                            <span class="tag tag-<%= a.topic %>"><%= a.category %></span>
+                            <h4><a href="<%= basePath %><%= a.path %>"><%= a.title %></a></h4>
+                            <p><%= (a.excerpt || (a.content ? a.content.substring(0, 80) : '')).replace(/<[^>]*>/g, '').replace(/[*#]/g, '').trim() %>...</p>
+                        </div>
                     </div>
-                    <h3><a href="<%= basePath %><%= a.path %>"><%= a.title.length > 30 ? a.title.substring(0, 30) + '...' : a.title %></a></h3>
-                    <p class="card-excerpt"><%= (a.excerpt || (a.content ? a.content.substring(0, 100) : '')).replace(/<[^>]*>/g, '').replace(/[*#]/g, '').trim() %></p>
-                    <div class="card-footer">
-                        <span class="card-meta">⏱ <%= a.readTime %> min</span>
-                        <a href="<%= basePath %><%= a.path %>" class="card-link">阅读 <span>→</span></a>
-                    </div>
-                </article>
+                <% }) %>
             <% }) %>
         </div>
     <% } else { %>
