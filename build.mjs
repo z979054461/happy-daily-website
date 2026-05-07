@@ -288,41 +288,79 @@ const globalStyles = `
     .fade-up { animation: fadeUp 0.5s ease forwards; opacity: 0; }
     
     /* ========== 时间轴 ========== */
-    .timeline { position: relative; max-width: 900px; margin: 0 auto; padding: 20px 0; }
-    .timeline::before {
-        content: ''; position: absolute; left: 50%; top: 0; bottom: 0; width: 2px;
-        background: linear-gradient(to bottom, var(--primary), var(--accent)); transform: translateX(-50%);
+    .timeline-wrapper { display: flex; gap: 40px; max-width: 1200px; margin: 0 auto; position: relative; }
+    
+    /* 侧边日期导航 */
+    .timeline-nav {
+        position: sticky; top: 100px; width: 120px; height: fit-content; flex-shrink: 0;
     }
-    .timeline-date { text-align: center; margin: 32px 0 24px; position: relative; z-index: 1; }
+    .timeline-nav-title {
+        font-size: 0.75rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase;
+        letter-spacing: 0.5px; margin-bottom: 12px; padding-left: 12px;
+    }
+    .timeline-nav-list { display: flex; flex-direction: column; gap: 4px; }
+    .timeline-nav-item {
+        display: flex; align-items: center; gap: 8px; padding: 8px 12px;
+        border-radius: 8px; text-decoration: none; color: var(--text-secondary);
+        font-size: 0.85rem; transition: all 0.2s ease; cursor: pointer;
+    }
+    .timeline-nav-item:hover { background: var(--bg-card); color: var(--text); }
+    .timeline-nav-item.active { background: var(--tag-bg); color: var(--primary); font-weight: 600; }
+    .timeline-nav-dot {
+        width: 6px; height: 6px; border-radius: 50%; background: var(--text-muted);
+        transition: all 0.2s;
+    }
+    .timeline-nav-item.active .timeline-nav-dot { background: var(--primary); transform: scale(1.2); }
+    
+    /* 主时间轴 */
+    .timeline { position: relative; flex: 1; padding: 20px 0; }
+    .timeline::before {
+        content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px;
+        background: linear-gradient(to bottom, var(--primary), var(--accent));
+    }
+    .timeline-date { 
+        margin: 32px 0 24px; position: relative; z-index: 1; 
+        scroll-margin-top: 100px;
+    }
+    .timeline-date:first-child { margin-top: 0; }
     .timeline-date span {
         display: inline-block; padding: 8px 20px; background: var(--bg-card); border: 1px solid var(--border);
         border-radius: 20px; font-size: 0.9rem; font-weight: 600; color: var(--text);
-        backdrop-filter: blur(8px); box-shadow: var(--shadow);
+        backdrop-filter: blur(8px); box-shadow: var(--shadow); margin-left: 24px;
     }
-    .timeline-item { display: flex; margin-bottom: 24px; position: relative; }
-    .timeline-item:nth-child(odd) { flex-direction: row-reverse; }
+    .timeline-item { 
+        display: flex; margin-bottom: 16px; position: relative; padding-left: 24px;
+    }
     .timeline-item::before {
-        content: ''; position: absolute; left: 50%; top: 24px; width: 12px; height: 12px;
-        background: var(--primary); border-radius: 50%; transform: translateX(-50%); border: 3px solid var(--bg); z-index: 2;
+        content: ''; position: absolute; left: -5px; top: 20px; width: 12px; height: 12px;
+        background: var(--primary); border-radius: 50%; border: 3px solid var(--bg); z-index: 2;
     }
     .timeline-content {
-        width: calc(50% - 40px); background: var(--bg-card); border: 1px solid var(--border);
+        flex: 1; background: var(--bg-card); border: 1px solid var(--border);
         border-radius: 12px; padding: 16px; transition: all 0.25s ease;
     }
     .timeline-content:hover { transform: translateY(-2px); border-color: var(--primary); box-shadow: var(--shadow); }
-    .timeline-item:nth-child(odd) .timeline-content { margin-right: 40px; }
-    .timeline-item:nth-child(even) .timeline-content { margin-left: 40px; }
     .timeline-content .tag { margin-bottom: 8px; display: inline-block; }
     .timeline-content h4 { font-size: 0.95rem; font-weight: 600; margin-bottom: 8px; line-height: 1.4; }
     .timeline-content h4 a { text-decoration: none; color: var(--text); transition: color 0.2s; }
     .timeline-content h4 a:hover { color: var(--primary); }
     .timeline-content p { font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; margin: 0; }
+    
+    /* 移动端适配 */
     @media (max-width: 768px) {
-        .timeline::before { left: 20px; }
-        .timeline-item { flex-direction: row !important; }
-        .timeline-item::before { left: 20px; transform: none; }
-        .timeline-content { width: calc(100% - 60px); margin-left: 40px !important; margin-right: 0 !important; }
-        .timeline-date { text-align: left; padding-left: 40px; }
+        .timeline-wrapper { flex-direction: column; gap: 20px; }
+        .timeline-nav {
+            position: relative; top: 0; width: 100%; order: -1;
+        }
+        .timeline-nav-list {
+            flex-direction: row; flex-wrap: wrap; gap: 8px;
+        }
+        .timeline-nav-item { padding: 6px 12px; font-size: 0.8rem; }
+        .timeline-nav-dot { display: none; }
+        .timeline::before { left: 0; }
+        .timeline-item { padding-left: 20px; }
+        .timeline-item::before { left: -5px; }
+        .timeline-date span { margin-left: 20px; }
     }
 `;
 
@@ -394,30 +432,65 @@ const homeTmpl = `
     </section>
     <% if (articles && articles.length > 0) { %>
         <% 
-        // 按日期分组
-        const grouped = {};
-        articles.forEach(a => {
+        var grouped = {};
+        articles.forEach(function(a) {
             if (!grouped[a.date]) grouped[a.date] = [];
             grouped[a.date].push(a);
         });
-        const dates = Object.keys(grouped).sort((a, b) => new Date(b) - new Date(a));
+        var dates = Object.keys(grouped).sort(function(a, b) { return new Date(b) - new Date(a); });
         %>
-        <div class="timeline">
-            <% dates.forEach((date, dateIdx) => { %>
-                <div class="timeline-date fade-up" style="animation-delay: <%= dateIdx * 0.1 %>s">
-                    <span><%= date %></span>
+        <div class="timeline-wrapper">
+            <nav class="timeline-nav fade-up">
+                <div class="timeline-nav-title">快速定位</div>
+                <div class="timeline-nav-list">
+                    <% dates.forEach(function(date, idx) { %>
+                        <a href="#d<%= idx %>" class="timeline-nav-item <%= idx === 0 ? 'active' : '' %>" data-date="d<%= idx %>">
+                            <span class="timeline-nav-dot"></span>
+                            <span><%= date %></span>
+                        </a>
+                    <% }); %>
                 </div>
-                <% grouped[date].forEach((a, i) => { %>
-                    <div class="timeline-item fade-up" style="animation-delay: <%= (dateIdx * 0.1) + (i * 0.05) %>s">
-                        <div class="timeline-content">
-                            <span class="tag tag-<%= a.topic %>"><%= a.category %></span>
-                            <h4><a href="<%= basePath %><%= a.path %>"><%= a.title %></a></h4>
-                            <p><%= (a.excerpt || (a.content ? a.content.substring(0, 80) : '')).replace(/<[^>]*>/g, '').replace(/[*#]/g, '').trim() %>...</p>
-                        </div>
+            </nav>
+            <div class="timeline">
+                <% dates.forEach(function(date, dateIdx) { %>
+                    <div id="d<%= dateIdx %>" class="timeline-date fade-up" style="animation-delay: <%= dateIdx * 0.1 %>s">
+                        <span><%= date %></span>
                     </div>
-                <% }) %>
-            <% }) %>
+                    <% grouped[date].forEach(function(a, i) { %>
+                        <div class="timeline-item fade-up" style="animation-delay: <%= (dateIdx * 0.1) + (i * 0.05) %>s">
+                            <div class="timeline-content">
+                                <span class="tag tag-<%= a.topic %>"><%= a.category %></span>
+                                <h4><a href="<%= basePath %><%= a.path %>"><%= a.title %></a></h4>
+                                <p><%= a.excerpt ? a.excerpt.substring(0, 80) : '' %>...</p>
+                            </div>
+                        </div>
+                    <% }); %>
+                <% }); %>
+            </div>
         </div>
+        <script>
+        (function() {
+            var navItems = document.querySelectorAll('.timeline-nav-item');
+            var dateSections = document.querySelectorAll('.timeline-date');
+            navItems.forEach(function(item) {
+                item.addEventListener('click', function() {
+                    navItems.forEach(function(n) { n.classList.remove('active'); });
+                    this.classList.add('active');
+                });
+            });
+            var observer = new IntersectionObserver(function(entries) {
+                entries.forEach(function(entry) {
+                    if (entry.isIntersecting) {
+                        var id = entry.target.id;
+                        navItems.forEach(function(item) {
+                            item.classList.toggle('active', item.dataset.date === id);
+                        });
+                    }
+                });
+            }, { rootMargin: '-100px 0px -50% 0px' });
+            dateSections.forEach(function(section) { observer.observe(section); });
+        })();
+        </script>
     <% } else { %>
         <div class="empty"><p>暂无文章，敬请期待...</p></div>
     <% } %>
