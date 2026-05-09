@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <base href="/happy-daily-website/">
+    <base href="/">
     <title>Happy Daily</title>
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap');
@@ -242,6 +242,82 @@
     /* ========== 动画 ========== */
     @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
     .fade-up { animation: fadeUp 0.5s ease forwards; opacity: 0; }
+    
+    /* ========== 时间轴 ========== */
+    .timeline-wrapper { display: flex; gap: 40px; max-width: 1200px; margin: 0 auto; position: relative; }
+    
+    /* 侧边日期导航 */
+    .timeline-nav {
+        position: sticky; top: 100px; width: 120px; height: fit-content; flex-shrink: 0;
+    }
+    .timeline-nav-title {
+        font-size: 0.75rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase;
+        letter-spacing: 0.5px; margin-bottom: 12px; padding-left: 12px;
+    }
+    .timeline-nav-list { display: flex; flex-direction: column; gap: 4px; }
+    .timeline-nav-item {
+        display: flex; align-items: center; gap: 8px; padding: 8px 12px;
+        border-radius: 8px; text-decoration: none; color: var(--text-secondary);
+        font-size: 0.85rem; transition: all 0.2s ease; cursor: pointer;
+    }
+    .timeline-nav-item:hover { background: var(--bg-card); color: var(--text); }
+    .timeline-nav-item.active { background: var(--tag-bg); color: var(--primary); font-weight: 600; }
+    .timeline-nav-dot {
+        width: 6px; height: 6px; border-radius: 50%; background: var(--text-muted);
+        transition: all 0.2s;
+    }
+    .timeline-nav-item.active .timeline-nav-dot { background: var(--primary); transform: scale(1.2); }
+    
+    /* 主时间轴 */
+    .timeline { position: relative; flex: 1; padding: 20px 0; }
+    .timeline::before {
+        content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px;
+        background: linear-gradient(to bottom, var(--primary), var(--accent));
+    }
+    .timeline-date { 
+        margin: 32px 0 24px; position: relative; z-index: 1; 
+        scroll-margin-top: 100px;
+    }
+    .timeline-date:first-child { margin-top: 0; }
+    .timeline-date span {
+        display: inline-block; padding: 8px 20px; background: var(--bg-card); border: 1px solid var(--border);
+        border-radius: 20px; font-size: 0.9rem; font-weight: 600; color: var(--text);
+        backdrop-filter: blur(8px); box-shadow: var(--shadow); margin-left: 24px;
+    }
+    .timeline-item { 
+        display: flex; margin-bottom: 16px; position: relative; padding-left: 24px;
+    }
+    .timeline-item::before {
+        content: ''; position: absolute; left: -5px; top: 20px; width: 12px; height: 12px;
+        background: var(--primary); border-radius: 50%; border: 3px solid var(--bg); z-index: 2;
+    }
+    .timeline-content {
+        flex: 1; background: var(--bg-card); border: 1px solid var(--border);
+        border-radius: 12px; padding: 16px; transition: all 0.25s ease;
+    }
+    .timeline-content:hover { transform: translateY(-2px); border-color: var(--primary); box-shadow: var(--shadow); }
+    .timeline-content .tag { margin-bottom: 8px; display: inline-block; }
+    .timeline-content h4 { font-size: 0.95rem; font-weight: 600; margin-bottom: 8px; line-height: 1.4; }
+    .timeline-content h4 a { text-decoration: none; color: var(--text); transition: color 0.2s; }
+    .timeline-content h4 a:hover { color: var(--primary); }
+    .timeline-content p { font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; margin: 0; }
+    
+    /* 移动端适配 */
+    @media (max-width: 768px) {
+        .timeline-wrapper { flex-direction: column; gap: 20px; }
+        .timeline-nav {
+            position: relative; top: 0; width: 100%; order: -1;
+        }
+        .timeline-nav-list {
+            flex-direction: row; flex-wrap: wrap; gap: 8px;
+        }
+        .timeline-nav-item { padding: 6px 12px; font-size: 0.8rem; }
+        .timeline-nav-dot { display: none; }
+        .timeline::before { left: 0; }
+        .timeline-item { padding-left: 20px; }
+        .timeline-item::before { left: -5px; }
+        .timeline-date span { margin-left: 20px; }
+    }
 </style>
     <script>
         const initTheme = () => {
@@ -267,16 +343,16 @@
     <div class="bg-glow"></div>
     <nav class="nav">
         <div class="nav-inner">
-            <a href="/happy-daily-website/" class="logo">Happy<span>Daily</span></a>
+            <a href="/" class="logo">Happy<span>Daily</span></a>
             <div class="nav-right">
                 <button class="menu-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
                 <div class="nav-links">
-                    <a href="/happy-daily-website/" class="nav-link active">首页</a>
-                    <a href="/happy-daily-website/life.html" class="nav-link ">生活</a>
-                    <a href="/happy-daily-website/tech.html" class="nav-link ">科技</a>
-                    <a href="/happy-daily-website/tools.html" class="nav-link ">效率</a>
-                    <a href="/happy-daily-website/ai.html" class="nav-link ">AI</a>
-                    <a href="/happy-daily-website/about.html" class="nav-link ">关于</a>
+                    <a href="/" class="nav-link active">首页</a>
+                    <a href="/life.html" class="nav-link ">生活</a>
+                    <a href="/tech.html" class="nav-link ">科技</a>
+                    <a href="/tools.html" class="nav-link ">效率</a>
+                    <a href="/ai.html" class="nav-link ">AI</a>
+                    <a href="/about.html" class="nav-link ">关于</a>
                 </div>
                 <button class="theme-btn" onclick="toggleTheme()" aria-label="切换主题">
                     <span class="theme-icon">🌙</span>
@@ -291,693 +367,968 @@
         <p>在代码与生活之间，寻找科技的温度。关于前沿技术、AI 进化与日常灵感的数字空间。</p>
     </section>
     
-        <div class="grid">
-            
-                <article class="card fade-up" style="animation-delay: 0s">
-                    <div class="card-header">
-                        <span class="tag tag-ai">AI</span>
-                        <span class="card-date">4/30/2026</span>
-                    </div>
-                    <h3><a href="/happy-daily-website/posts/ai-1777514475818.html">开源大模型重塑AI格局</a></h3>
-                    <p class="card-excerpt">开源大模型在核心指标上比肩顶尖闭源模型，正以透明协作的范式重塑AI产业格局。</p>
-                    <div class="card-footer">
-                        <span class="card-meta">⏱ 3 min</span>
-                        <a href="/happy-daily-website/posts/ai-1777514475818.html" class="card-link">阅读 <span>→</span></a>
-                    </div>
-                </article>
-            
-                <article class="card fade-up" style="animation-delay: 0.05s">
-                    <div class="card-header">
-                        <span class="tag tag-tech">科技</span>
-                        <span class="card-date">4/30/2026</span>
-                    </div>
-                    <h3><a href="/happy-daily-website/posts/tech-1777514475818.html">柔性电子皮肤迎来突破</a></h3>
-                    <p class="card-excerpt">柔性电子皮肤融合新型材料与打印工艺，正从概念走向健康监测和康复医学的实际应用。</p>
-                    <div class="card-footer">
-                        <span class="card-meta">⏱ 3 min</span>
-                        <a href="/happy-daily-website/posts/tech-1777514475818.html" class="card-link">阅读 <span>→</span></a>
-                    </div>
-                </article>
-            
-                <article class="card fade-up" style="animation-delay: 0.1s">
-                    <div class="card-header">
-                        <span class="tag tag-life">生活</span>
-                        <span class="card-date">4/30/2026</span>
-                    </div>
-                    <h3><a href="/happy-daily-website/posts/life-1777514475818.html">把平凡的日子过出滋味</a></h3>
-                    <p class="card-excerpt">生活的滋味不在于经历多少大事，而在于能不能在小事里品出味道，把普通的日子过得有密度。</p>
-                    <div class="card-footer">
-                        <span class="card-meta">⏱ 3 min</span>
-                        <a href="/happy-daily-website/posts/life-1777514475818.html" class="card-link">阅读 <span>→</span></a>
-                    </div>
-                </article>
-            
-                <article class="card fade-up" style="animation-delay: 0.15000000000000002s">
-                    <div class="card-header">
-                        <span class="tag tag-tools">工具</span>
-                        <span class="card-date">4/30/2026</span>
-                    </div>
-                    <h3><a href="/happy-daily-website/posts/tools-1777514475818.html">笔记双链法激活知识</a></h3>
-                    <p class="card-excerpt">双链笔记法通过笔记间的双向链接构建知识网络，让零散信息转化为可涌现洞察的智慧系统。</p>
-                    <div class="card-footer">
-                        <span class="card-meta">⏱ 3 min</span>
-                        <a href="/happy-daily-website/posts/tools-1777514475818.html" class="card-link">阅读 <span>→</span></a>
-                    </div>
-                </article>
-            
-                <article class="card fade-up" style="animation-delay: 0.2s">
-                    <div class="card-header">
-                        <span class="tag tag-ai">AI</span>
-                        <span class="card-date">4/28/2026</span>
-                    </div>
-                    <h3><a href="/happy-daily-website/posts/ai-1777341664499.html">多模态大模型走向融合</a></h3>
-                    <p class="card-excerpt">多模态大模型正从拼接式走向原生融合，统一训练框架让模型同时理解文本、图像、音频和视频。</p>
-                    <div class="card-footer">
-                        <span class="card-meta">⏱ 3 min</span>
-                        <a href="/happy-daily-website/posts/ai-1777341664499.html" class="card-link">阅读 <span>→</span></a>
-                    </div>
-                </article>
-            
-                <article class="card fade-up" style="animation-delay: 0.25s">
-                    <div class="card-header">
-                        <span class="tag tag-tech">科技</span>
-                        <span class="card-date">4/28/2026</span>
-                    </div>
-                    <h3><a href="/happy-daily-website/posts/tech-1777341664499.html">MicroLED显示技术加速普及</a></h3>
-                    <p class="card-excerpt">MicroLED显示技术突破巨量转移瓶颈，良率提升至95%以上，正从大尺寸电视和车载领域加速普及。</p>
-                    <div class="card-footer">
-                        <span class="card-meta">⏱ 3 min</span>
-                        <a href="/happy-daily-website/posts/tech-1777341664499.html" class="card-link">阅读 <span>→</span></a>
-                    </div>
-                </article>
-            
-                <article class="card fade-up" style="animation-delay: 0.30000000000000004s">
-                    <div class="card-header">
-                        <span class="tag tag-life">生活</span>
-                        <span class="card-date">4/28/2026</span>
-                    </div>
-                    <h3><a href="/happy-daily-website/posts/life-1777341664499.html">慢下来的力量</a></h3>
-                    <p class="card-excerpt">崇尚速度的时代里，慢下来不是浪费时间，而是给生活留出呼吸的空间，积累内心的从容。</p>
-                    <div class="card-footer">
-                        <span class="card-meta">⏱ 3 min</span>
-                        <a href="/happy-daily-website/posts/life-1777341664499.html" class="card-link">阅读 <span>→</span></a>
-                    </div>
-                </article>
-            
-                <article class="card fade-up" style="animation-delay: 0.35000000000000003s">
-                    <div class="card-header">
-                        <span class="tag tag-tools">工具</span>
-                        <span class="card-date">4/28/2026</span>
-                    </div>
-                    <h3><a href="/happy-daily-website/posts/tools-1777341664499.html">GTD工作法实操指南</a></h3>
-                    <p class="card-excerpt">GTD通过收集、整理、组织、回顾、执行五步清空大脑，让注意力回归任务执行，有效降低焦虑。</p>
-                    <div class="card-footer">
-                        <span class="card-meta">⏱ 3 min</span>
-                        <a href="/happy-daily-website/posts/tools-1777341664499.html" class="card-link">阅读 <span>→</span></a>
-                    </div>
-                </article>
-            
-                <article class="card fade-up" style="animation-delay: 0.4s">
-                    <div class="card-header">
-                        <span class="tag tag-ai">AI</span>
-                        <span class="card-date">4/26/2026</span>
-                    </div>
-                    <h3><a href="/happy-daily-website/posts/ai-latest.html">AI编程助手进入推理时代</a></h3>
-                    <p class="card-excerpt">2026年，AI编程助手正在经历一场从代码补全到代码推理的质变，开发时间平均缩短40%-60%。</p>
-                    <div class="card-footer">
-                        <span class="card-meta">⏱ 3 min</span>
-                        <a href="/happy-daily-website/posts/ai-latest.html" class="card-link">阅读 <span>→</span></a>
-                    </div>
-                </article>
-            
-                <article class="card fade-up" style="animation-delay: 0.45s">
-                    <div class="card-header">
-                        <span class="tag tag-tech">科技</span>
-                        <span class="card-date">4/26/2026</span>
-                    </div>
-                    <h3><a href="/happy-daily-website/posts/tech-latest.html">空间计算走进日常</a></h3>
-                    <p class="card-excerpt">空间计算正在从极客玩具变成真正的生产力工具，在工业、医疗、教育领域加速落地。</p>
-                    <div class="card-footer">
-                        <span class="card-meta">⏱ 3 min</span>
-                        <a href="/happy-daily-website/posts/tech-latest.html" class="card-link">阅读 <span>→</span></a>
-                    </div>
-                </article>
-            
-                <article class="card fade-up" style="animation-delay: 0.5s">
-                    <div class="card-header">
-                        <span class="tag tag-life">生活</span>
-                        <span class="card-date">4/26/2026</span>
-                    </div>
-                    <h3><a href="/happy-daily-website/posts/life-latest.html">留白的力量</a></h3>
-                    <p class="card-excerpt">信息过载的时代，留白不是浪费时间，而是大脑的后台处理时间，帮助整理记忆和产生创意。</p>
-                    <div class="card-footer">
-                        <span class="card-meta">⏱ 3 min</span>
-                        <a href="/happy-daily-website/posts/life-latest.html" class="card-link">阅读 <span>→</span></a>
-                    </div>
-                </article>
-            
-                <article class="card fade-up" style="animation-delay: 0.55s">
-                    <div class="card-header">
-                        <span class="tag tag-tools">工具</span>
-                        <span class="card-date">4/26/2026</span>
-                    </div>
-                    <h3><a href="/happy-daily-website/posts/tools-latest.html">用时间盒法拯救专注力</a></h3>
-                    <p class="card-excerpt">时间盒法通过固定时间块专注单任务，有效对抗拖延和分心，是提升专注力的实用方法。</p>
-                    <div class="card-footer">
-                        <span class="card-meta">⏱ 3 min</span>
-                        <a href="/happy-daily-website/posts/tools-latest.html" class="card-link">阅读 <span>→</span></a>
-                    </div>
-                </article>
-            
-                <article class="card fade-up" style="animation-delay: 0.6000000000000001s">
-                    <div class="card-header">
-                        <span class="tag tag-tools">工具</span>
-                        <span class="card-date">2026/4/25</span>
-                    </div>
-                    <h3><a href="/happy-daily-website/posts/tools-1777082714257.html">番茄工作法实操指南</a></h3>
-                    <p class="card-excerpt">番茄工作法通过“专注与休息”的节奏切换，有效对抗拖延与精力耗散。实操仅需三步：
-第一步，明确单一任务。动笔前将待办事项写在实体便签上，每次仅锁定一项。例如“撰写项目方案第二章”或“整理客户反馈表”，务</p>
-                    <div class="card-footer">
-                        <span class="card-meta">⏱ 2 min</span>
-                        <a href="/happy-daily-website/posts/tools-1777082714257.html" class="card-link">阅读 <span>→</span></a>
-                    </div>
-                </article>
-            
-                <article class="card fade-up" style="animation-delay: 0.65s">
-                    <div class="card-header">
-                        <span class="tag tag-life">生活</span>
-                        <span class="card-date">2026/4/25</span>
-                    </div>
-                    <h3><a href="/happy-daily-website/posts/life-1777082640402.html">日子有光，心中有暖</a></h3>
-                    <p class="card-excerpt">生活如同一幅徐徐展开的长卷，不必急于填满每一处留白，只需用心感受每一笔的起承转合。我们常在匆忙的步履中忘了抬头，却不知晨光已悄然爬上窗棂，微风正轻拂过街角的树梢。其实，幸福从不藏在遥远的山海，而是落在</p>
-                    <div class="card-footer">
-                        <span class="card-meta">⏱ 2 min</span>
-                        <a href="/happy-daily-website/posts/life-1777082640402.html" class="card-link">阅读 <span>→</span></a>
-                    </div>
-                </article>
-            
-                <article class="card fade-up" style="animation-delay: 0.7000000000000001s">
-                    <div class="card-header">
-                        <span class="tag tag-tech">科技</span>
-                        <span class="card-date">2026/4/25</span>
-                    </div>
-                    <h3><a href="/happy-daily-website/posts/tech-1777082569862.html">端侧AI手机技术解析</a></h3>
-                    <p class="card-excerpt">近年来，端侧人工智能手机成为消费电子领域的重要趋势。与传统依赖云端算力的AI功能不同，端侧AI手机将大语言模型及多模态算法直接部署于设备本地芯片。行业联盟已逐步建立统一的性能评测标准，推动软硬件协同优</p>
-                    <div class="card-footer">
-                        <span class="card-meta">⏱ 2 min</span>
-                        <a href="/happy-daily-website/posts/tech-1777082569862.html" class="card-link">阅读 <span>→</span></a>
-                    </div>
-                </article>
-            
-                <article class="card fade-up" style="animation-delay: 0.75s">
-                    <div class="card-header">
-                        <span class="tag tag-ai">AI</span>
-                        <span class="card-date">2026/4/25</span>
-                    </div>
-                    <h3><a href="/happy-daily-website/posts/ai-1777082499218.html">智能体突破：自主执行新时代</a></h3>
-                    <p class="card-excerpt">今天，人工智能领域迎来一项令人瞩目的进展：新一代“智能体”技术正式跨越关键门槛，让AI从“只会对话问答”走向“能独立完成任务”。过去我们熟悉的AI，大多停留在内容生成层面，比如撰写文案、绘制图片或多语</p>
-                    <div class="card-footer">
-                        <span class="card-meta">⏱ 3 min</span>
-                        <a href="/happy-daily-website/posts/ai-1777082499218.html" class="card-link">阅读 <span>→</span></a>
-                    </div>
-                </article>
-            
-                <article class="card fade-up" style="animation-delay: 0.8s">
-                    <div class="card-header">
-                        <span class="tag tag-tools">工具</span>
-                        <span class="card-date">2026/4/24</span>
-                    </div>
-                    <h3><a href="/happy-daily-website/posts/tools-1776996438121.html">时间块管理法</a></h3>
-                    <p class="card-excerpt">提升效率的核心不在于延长工时，而在于掌控时间流向。时间块管理法通过将全天划分为固定时长的专注区块，有效切断碎片化干扰，全程可离线操作，彻底规避数据隐私风险。
-实操仅需三步。第一步，晨间切分。使用纸质周</p>
-                    <div class="card-footer">
-                        <span class="card-meta">⏱ 2 min</span>
-                        <a href="/happy-daily-website/posts/tools-1776996438121.html" class="card-link">阅读 <span>→</span></a>
-                    </div>
-                </article>
-            
-                <article class="card fade-up" style="animation-delay: 0.8500000000000001s">
-                    <div class="card-header">
-                        <span class="tag tag-life">生活</span>
-                        <span class="card-date">2026/4/24</span>
-                    </div>
-                    <h3><a href="/happy-daily-website/posts/life-1776996369236.html">岁月生香，心向暖阳</a></h3>
-                    <p class="card-excerpt">时光如一条静静流淌的河，不疾不徐，却总在不经意间雕琢出生命的轮廓。生活并非总是波澜壮阔，更多时候，它是清晨窗台上的一缕微光，是午后书页间的一阵清风，是傍晚街角飘来的一阵饭香。这些看似平凡的瞬间，恰是岁</p>
-                    <div class="card-footer">
-                        <span class="card-meta">⏱ 2 min</span>
-                        <a href="/happy-daily-website/posts/life-1776996369236.html" class="card-link">阅读 <span>→</span></a>
-                    </div>
-                </article>
-            
-                <article class="card fade-up" style="animation-delay: 0.9s">
-                    <div class="card-header">
-                        <span class="tag tag-tech">科技</span>
-                        <span class="card-date">2026/4/24</span>
-                    </div>
-                    <h3><a href="/happy-daily-website/posts/tech-1776996301138.html">端侧人工智能电脑趋势</a></h3>
-                    <p class="card-excerpt">端侧智能电脑正成为消费电子与办公设备领域的重要趋势。与传统依赖云端服务器的计算模式不同，新一代AI电脑在主板中集成了专用神经网络处理单元，可在设备本地高效运行大语言模型与多模态算法。这一架构转变带来了</p>
-                    <div class="card-footer">
-                        <span class="card-meta">⏱ 2 min</span>
-                        <a href="/happy-daily-website/posts/tech-1776996301138.html" class="card-link">阅读 <span>→</span></a>
-                    </div>
-                </article>
-            
-                <article class="card fade-up" style="animation-delay: 0.9500000000000001s">
-                    <div class="card-header">
-                        <span class="tag tag-ai">AI</span>
-                        <span class="card-date">2026/4/24</span>
-                    </div>
-                    <h3><a href="/happy-daily-website/posts/ai-1776996236633.html">智能推理模型新突破</a></h3>
-                    <p class="card-excerpt">近日，人工智能领域迎来一项备受瞩目的进展：新一代推理模型正式亮相。与以往只能“照本宣科”的对话程序不同，这类新架构学会了“慢思考”。面对复杂问题时，它们不再急于输出结果，而是像人类解题一般，在后台进行</p>
-                    <div class="card-footer">
-                        <span class="card-meta">⏱ 3 min</span>
-                        <a href="/happy-daily-website/posts/ai-1776996236633.html" class="card-link">阅读 <span>→</span></a>
-                    </div>
-                </article>
-            
-                <article class="card fade-up" style="animation-delay: 1s">
-                    <div class="card-header">
-                        <span class="tag tag-tools">工具</span>
-                        <span class="card-date">2026/4/23</span>
-                    </div>
-                    <h3><a href="/happy-daily-website/posts/tools-1776910467220.html">时间块工作法实战指南</a></h3>
-                    <p class="card-excerpt">时间块工作法的核心是将一天划分为若干独立时段，每段仅专注同类任务，从而彻底消除任务切换带来的隐形损耗。实操只需三步：清晨预留十分钟列出当日待办，按认知负荷归类为“深度攻坚”“协同沟通”“机械执行”三类</p>
-                    <div class="card-footer">
-                        <span class="card-meta">⏱ 2 min</span>
-                        <a href="/happy-daily-website/posts/tools-1776910467220.html" class="card-link">阅读 <span>→</span></a>
-                    </div>
-                </article>
-            
-                <article class="card fade-up" style="animation-delay: 1.05s">
-                    <div class="card-header">
-                        <span class="tag tag-life">生活</span>
-                        <span class="card-date">2026/4/23</span>
-                    </div>
-                    <h3><a href="/happy-daily-website/posts/life-1776910397116.html">《岁月生香，心向暖阳》</a></h3>
-                    <p class="card-excerpt">生活从不是一场匆忙的奔赴，而是一次次与平凡相拥的旅程。晨光透过半掩的窗棂，落在桌角的素瓷杯上，氤氲的热气缓缓升起，仿佛在轻声提醒：日子本就藏着不动声色的温柔。我们常在奔波中追逐远方的风景，却忘了低头看</p>
-                    <div class="card-footer">
-                        <span class="card-meta">⏱ 2 min</span>
-                        <a href="/happy-daily-website/posts/life-1776910397116.html" class="card-link">阅读 <span>→</span></a>
-                    </div>
-                </article>
-            
-                <article class="card fade-up" style="animation-delay: 1.1s">
-                    <div class="card-header">
-                        <span class="tag tag-tech">科技</span>
-                        <span class="card-date">2026/4/23</span>
-                    </div>
-                    <h3><a href="/happy-daily-website/posts/tech-1776910310956.html">端侧人工智能电脑成新趋势</a></h3>
-                    <p class="card-excerpt">端侧AI电脑是近期科技市场的重要发展方向，指内置专用神经网络处理单元的个人计算机。与传统依赖云端算力的设备不同，该类产品将生成式模型直接部署于本地硬件，实现低延迟、高稳定性的智能交互。目前主流厂商已密</p>
-                    <div class="card-footer">
-                        <span class="card-meta">⏱ 2 min</span>
-                        <a href="/happy-daily-website/posts/tech-1776910310956.html" class="card-link">阅读 <span>→</span></a>
-                    </div>
-                </article>
-            
-                <article class="card fade-up" style="animation-delay: 1.1500000000000001s">
-                    <div class="card-header">
-                        <span class="tag tag-ai">AI</span>
-                        <span class="card-date">2026/4/23</span>
-                    </div>
-                    <h3><a href="/happy-daily-website/posts/ai-1776910233310.html">智能推理迈入新纪元</a></h3>
-                    <p class="card-excerpt">今天的人工智能正经历一场静悄悄的蜕变。如果说过去的模型擅长“记忆与模仿”，那么如今的突破则让它真正学会了“思考与推理”。近期，多家研究机构相继推出新一代基础架构，它们在复杂逻辑推演、多模态理解与自主任</p>
-                    <div class="card-footer">
-                        <span class="card-meta">⏱ 3 min</span>
-                        <a href="/happy-daily-website/posts/ai-1776910233310.html" class="card-link">阅读 <span>→</span></a>
-                    </div>
-                </article>
-            
-                <article class="card fade-up" style="animation-delay: 1.2000000000000002s">
-                    <div class="card-header">
-                        <span class="tag tag-tools">工具</span>
-                        <span class="card-date">2026/4/22</span>
-                    </div>
-                    <h3><a href="/happy-daily-website/posts/tools-1776824064706.html">时间块工作法</a></h3>
-                    <p class="card-excerpt">在信息过载的当下，专注力是最稀缺的生产力。时间块工作法通过将全天切割为若干固定时长的任务区块，帮助个体建立清晰的工作节奏。该方案仅需本地日历或纸质手帐即可运行，全程离线操作，无需账号绑定与数据上传，从</p>
-                    <div class="card-footer">
-                        <span class="card-meta">⏱ 2 min</span>
-                        <a href="/happy-daily-website/posts/tools-1776824064706.html" class="card-link">阅读 <span>→</span></a>
-                    </div>
-                </article>
-            
-                <article class="card fade-up" style="animation-delay: 1.25s">
-                    <div class="card-header">
-                        <span class="tag tag-life">生活</span>
-                        <span class="card-date">2026/4/22</span>
-                    </div>
-                    <h3><a href="/happy-daily-website/posts/life-1776824002907.html">拾光而行，静待花开</a></h3>
-                    <p class="card-excerpt">生活从不急于给出答案，它只在我们放慢脚步时，悄悄铺展成诗。晨起的一缕微光，午后的一盏清茶，街角一声善意的问候，皆是岁月无声的馈赠。我们总在追逐远方的风景，却常常忘了低头看看脚边的青草。其实，真正的丰盈</p>
-                    <div class="card-footer">
-                        <span class="card-meta">⏱ 2 min</span>
-                        <a href="/happy-daily-website/posts/life-1776824002907.html" class="card-link">阅读 <span>→</span></a>
-                    </div>
-                </article>
-            
-                <article class="card fade-up" style="animation-delay: 1.3s">
-                    <div class="card-header">
-                        <span class="tag tag-tech">科技</span>
-                        <span class="card-date">2026/4/22</span>
-                    </div>
-                    <h3><a href="/happy-daily-website/posts/tech-1776823906930.html">人工智能电脑趋势解析</a></h3>
-                    <p class="card-excerpt">近期，人工智能电脑成为消费电子与产业界的核心焦点。与传统个人电脑不同，该设备在主板集成专用神经网络处理单元，并预装轻量化端侧大模型，实现算力向本地迁移。其兴起得益于半导体工艺迭代、模型压缩技术突破，以</p>
-                    <div class="card-footer">
-                        <span class="card-meta">⏱ 2 min</span>
-                        <a href="/happy-daily-website/posts/tech-1776823906930.html" class="card-link">阅读 <span>→</span></a>
-                    </div>
-                </article>
-            
-                <article class="card fade-up" style="animation-delay: 1.35s">
-                    <div class="card-header">
-                        <span class="tag tag-ai">AI</span>
-                        <span class="card-date">2026/4/22</span>
-                    </div>
-                    <h3><a href="/happy-daily-website/posts/ai-1776823827696.html">让机器学会“思考”的突破</a></h3>
-                    <p class="card-excerpt">过去几年，人工智能的“聪明”主要体现在能听懂指令、会写文案、能生成图片，但面对需要严密推导的复杂问题，它常常只能“凭概率猜答案”。今日AI领域的最新进展，正是让机器真正跨越这道门槛，学会像人类一样“一</p>
-                    <div class="card-footer">
-                        <span class="card-meta">⏱ 3 min</span>
-                        <a href="/happy-daily-website/posts/ai-1776823827696.html" class="card-link">阅读 <span>→</span></a>
-                    </div>
-                </article>
-            
-                <article class="card fade-up" style="animation-delay: 1.4000000000000001s">
-                    <div class="card-header">
-                        <span class="tag tag-tools">工具</span>
-                        <span class="card-date">2026/4/21</span>
-                    </div>
-                    <h3><a href="/happy-daily-website/posts/tools-1776737472644.html">番茄工作法本地化实操指南</a></h3>
-                    <p class="card-excerpt">推荐将系统自带计时器与本地纯文本清单结合，打造零隐私泄露的高效工作流。该方法无需注册账号，不依赖网络同步，数据完全留存于本机，彻底规避云端泄露风险。
-第一步，搭建极简容器。新建TXT文件，划分“核心任</p>
-                    <div class="card-footer">
-                        <span class="card-meta">⏱ 2 min</span>
-                        <a href="/happy-daily-website/posts/tools-1776737472644.html" class="card-link">阅读 <span>→</span></a>
-                    </div>
-                </article>
-            
-                <article class="card fade-up" style="animation-delay: 1.4500000000000002s">
-                    <div class="card-header">
-                        <span class="tag tag-life">生活</span>
-                        <span class="card-date">2026/4/21</span>
-                    </div>
-                    <h3><a href="/happy-daily-website/posts/life-1776737363822.html">岁月生花，心向阳光</a></h3>
-                    <p class="card-excerpt">生活从不是一场急促的奔跑，而是一段从容的漫步。我们总在追逐远方的风景，却常常忘了低头看看脚边悄然绽放的野花。其实，真正的丰盈往往藏在那些不经意的瞬间：清晨窗台上的一缕微光，街角面包店飘来的麦香，或是雨</p>
-                    <div class="card-footer">
-                        <span class="card-meta">⏱ 2 min</span>
-                        <a href="/happy-daily-website/posts/life-1776737363822.html" class="card-link">阅读 <span>→</span></a>
-                    </div>
-                </article>
-            
-                <article class="card fade-up" style="animation-delay: 1.5s">
-                    <div class="card-header">
-                        <span class="tag tag-tech">科技</span>
-                        <span class="card-date">2026/4/21</span>
-                    </div>
-                    <h3><a href="/happy-daily-website/posts/tech-1776737300596.html">端侧智能计算新趋势</a></h3>
-                    <p class="card-excerpt">近期，消费电子与算力架构正经历从云端向终端迁移的显著转变，端侧大模型已成为行业核心发展方向。该趋势以新一代智能终端为载体，将经过轻量化压缩的通用模型直接部署于本地芯片。其技术逻辑在于依托专用神经网络处</p>
-                    <div class="card-footer">
-                        <span class="card-meta">⏱ 2 min</span>
-                        <a href="/happy-daily-website/posts/tech-1776737300596.html" class="card-link">阅读 <span>→</span></a>
-                    </div>
-                </article>
-            
-                <article class="card fade-up" style="animation-delay: 1.55s">
-                    <div class="card-header">
-                        <span class="tag tag-ai">AI</span>
-                        <span class="card-date">2026/4/21</span>
-                    </div>
-                    <h3><a href="/happy-daily-website/posts/ai-1776737207046.html">人工智能迈入自主时代</a></h3>
-                    <p class="card-excerpt">近日，人工智能领域迎来一项标志性进展：模型不再局限于“回答问题”，而是能够主动规划、调用工具并完成复杂任务。这一突破被称为“智能体”技术的成熟，正悄然改变人机交互的范式。
-过去的大模型更像博学的“问答</p>
-                    <div class="card-footer">
-                        <span class="card-meta">⏱ 3 min</span>
-                        <a href="/happy-daily-website/posts/ai-1776737207046.html" class="card-link">阅读 <span>→</span></a>
-                    </div>
-                </article>
-            
-                <article class="card fade-up" style="animation-delay: 1.6s">
-                    <div class="card-header">
-                        <span class="tag tag-ai">AI</span>
-                        <span class="card-date">2026/4/20</span>
-                    </div>
-                    <h3><a href="/happy-daily-website/posts/ai-1776654384525.html">如果你最近关注科技动态，一定会发现人工智能正以肉眼可见的速度...</a></h3>
-                    <p class="card-excerpt">最引人注目的进展是“多模态深度融合”。过去，AI识别图像、处理语音、理解文本往往依赖不同模型拼接；如今，新一代基础模型已能同时接收并关联图文、音视频信息，实现跨感官的统一理解。例如，你只需输入一段模糊</p>
-                    <div class="card-footer">
-                        <span class="card-meta">⏱ 1 min</span>
-                        <a href="/happy-daily-website/posts/ai-1776654384525.html" class="card-link">阅读 <span>→</span></a>
-                    </div>
-                </article>
-            
-                <article class="card fade-up" style="animation-delay: 1.6500000000000001s">
-                    <div class="card-header">
-                        <span class="tag tag-tech">科技</span>
-                        <span class="card-date">2026/4/20</span>
-                    </div>
-                    <h3><a href="/happy-daily-website/posts/tech-1776654441760.html">在实际应用中，AI PC已支持文档智能摘要、多语言实时翻译、...</a></h3>
-                    <p class="card-excerpt">从客观评估来看，AI PC的优势在于离线可用、响应迅速且减少外部数据传输。但需注意：本地模型在复杂推理与长文本处理上仍弱于云端大模型；部分AI功能依赖特定软件生态，跨平台兼容性尚在优化中。此外，NPU</p>
-                    <div class="card-footer">
-                        <span class="card-meta">⏱ 1 min</span>
-                        <a href="/happy-daily-website/posts/tech-1776654441760.html" class="card-link">阅读 <span>→</span></a>
-                    </div>
-                </article>
-            
-                <article class="card fade-up" style="animation-delay: 1.7000000000000002s">
-                    <div class="card-header">
-                        <span class="tag tag-life">生活</span>
-                        <span class="card-date">2026/4/20</span>
-                    </div>
-                    <h3><a href="/happy-daily-website/posts/life-1776654499392.html">日子并非总是波澜壮阔，更多时候是细水长流的平常。一杯温热的清...</a></h3>
-                    <p class="card-excerpt">前行路上，难免有风雨交加的时刻。但请相信，阴霾从不是天空的全部，而是光正在重新集结的序曲。每一次跌倒后的起身，都在无声地积蓄韧性；每一次迷茫后的清醒，都是灵魂在悄然拔节。生活从不承诺一路坦途，却总会在</p>
-                    <div class="card-footer">
-                        <span class="card-meta">⏱ 1 min</span>
-                        <a href="/happy-daily-website/posts/life-1776654499392.html" class="card-link">阅读 <span>→</span></a>
-                    </div>
-                </article>
-            
-                <article class="card fade-up" style="animation-delay: 1.75s">
-                    <div class="card-header">
-                        <span class="tag tag-tools">工具</span>
-                        <span class="card-date">2026/4/20</span>
-                    </div>
-                    <h3><a href="/happy-daily-website/posts/tools-1776654585139.html">核心逻辑是将工作日切割为固定时长的“时间块”，每块仅绑定单一...</a></h3>
-                    <p class="card-excerpt">一、晨间列单。用TXT写下待办，按“对核心目标的贡献度”排序，锁定3项高价值任务，其余琐碎事项统一归入“碎片池”。
-二、硬性排块。将任务填入日历，分配30至90分钟专属时段。如9:00至10:30写方</p>
-                    <div class="card-footer">
-                        <span class="card-meta">⏱ 1 min</span>
-                        <a href="/happy-daily-website/posts/tools-1776654585139.html" class="card-link">阅读 <span>→</span></a>
-                    </div>
-                </article>
-            
-                <article class="card fade-up" style="animation-delay: 1.8s">
-                    <div class="card-header">
-                        <span class="tag tag-tools">工具</span>
-                        <span class="card-date">2026/4/17</span>
-                    </div>
-                    <h3><a href="/happy-daily-website/posts/tools-1776391552473.html">推荐“番茄工作法+本地离线计时器”组合。该方法通过“25分钟...</a></h3>
-                    <p class="card-excerpt">实操步骤如下：①每日开工前，用纸笔或本地备忘录写下3项核心任务，按“重要且紧急”排序；②开启无需联网的计时工具（手机自带时钟/实体机械钟均可），设定25分钟；③专注期内仅处理当前任务，关闭非必要通知，</p>
-                    <div class="card-footer">
-                        <span class="card-meta">⏱ 2 min</span>
-                        <a href="/happy-daily-website/posts/tools-1776391552473.html" class="card-link">阅读 <span>→</span></a>
-                    </div>
-                </article>
-            
-                <article class="card fade-up" style="animation-delay: 1.85s">
-                    <div class="card-header">
-                        <span class="tag tag-life">生活</span>
-                        <span class="card-date">2026/4/17</span>
-                    </div>
-                    <h3><a href="/happy-daily-website/posts/life-1776391515362.html">生活从不喧哗，它总在细微处悄悄绽放。清晨窗台的一缕微光，雨后...</a></h3>
-                    <p class="card-excerpt">走过几度春秋，渐渐懂得：人生并非一场必须步步争先的竞赛，而是一段允许试错、允许停顿的旅程。岁月从不催促谁必须立刻成熟，它只以四季轮转告诉我们：春生夏长，秋收冬藏，各有其时。那些看似缓慢的日子，恰是生命</p>
-                    <div class="card-footer">
-                        <span class="card-meta">⏱ 2 min</span>
-                        <a href="/happy-daily-website/posts/life-1776391515362.html" class="card-link">阅读 <span>→</span></a>
-                    </div>
-                </article>
-            
-                <article class="card fade-up" style="animation-delay: 1.9000000000000001s">
-                    <div class="card-header">
-                        <span class="tag tag-tech">科技</span>
-                        <span class="card-date">2026/4/17</span>
-                    </div>
-                    <h3><a href="/happy-daily-website/posts/tech-1776391448164.html">折叠屏手机是近两年持续升温的科技产品趋势。依托柔性OLED屏...</a></h3>
-                    <p class="card-excerpt">在实用层面，折叠屏的核心价值在于交互效率的优化。展开状态支持原生分屏、悬浮窗与跨应用拖拽，适合移动办公、数据对比、电子批注与沉浸式阅读；合拢状态下外屏保留完整手机功能，满足单手通话、扫码与快捷操作。各</p>
-                    <div class="card-footer">
-                        <span class="card-meta">⏱ 2 min</span>
-                        <a href="/happy-daily-website/posts/tech-1776391448164.html" class="card-link">阅读 <span>→</span></a>
-                    </div>
-                </article>
-            
-                <article class="card fade-up" style="animation-delay: 1.9500000000000002s">
-                    <div class="card-header">
-                        <span class="tag tag-ai">AI</span>
-                        <span class="card-date">2026/4/17</span>
-                    </div>
-                    <h3><a href="/happy-daily-website/posts/ai-1776391393567.html">今日AI新跨越：从“能听会说”到“会想会做”</a></h3>
-                    <p class="card-excerpt">近日，人工智能领域迎来一系列令人瞩目的进展。与过去只能处理单一任务的AI不同，今天的模型正朝着“全能型”迈进。它们不仅能读懂文字、识别图像，还能理解声音与视频，并在复杂场景中做出合理推断。这些突破并非</p>
-                    <div class="card-footer">
-                        <span class="card-meta">⏱ 3 min</span>
-                        <a href="/happy-daily-website/posts/ai-1776391393567.html" class="card-link">阅读 <span>→</span></a>
-                    </div>
-                </article>
-            
-                <article class="card fade-up" style="animation-delay: 2s">
-                    <div class="card-header">
-                        <span class="tag tag-tools">工具</span>
-                        <span class="card-date">2026/4/16</span>
-                    </div>
-                    <h3><a href="/happy-daily-website/posts/tools-1776305026486.html">推荐“时间块管理法”（Time Blocking）。该方法将...</a></h3>
-                    <p class="card-excerpt">实操分三步：第一，晨间10分钟列出当日待办，按“必须完成/可推迟/可委托”分级，锁定3项核心任务。第二，在本地表格或纸质日程本中为每项任务划定固定区间（如9:00-10:30撰写方案），相邻时间块预留</p>
-                    <div class="card-footer">
-                        <span class="card-meta">⏱ 2 min</span>
-                        <a href="/happy-daily-website/posts/tools-1776305026486.html" class="card-link">阅读 <span>→</span></a>
-                    </div>
-                </article>
-            
-                <article class="card fade-up" style="animation-delay: 2.0500000000000003s">
-                    <div class="card-header">
-                        <span class="tag tag-life">生活</span>
-                        <span class="card-date">2026/4/16</span>
-                    </div>
-                    <h3><a href="/happy-daily-website/posts/life-1776304963646.html">生活从不急于给出答案，它更像一条缓缓流淌的河，带着岁月的温度...</a></h3>
-                    <p class="card-excerpt">一杯温茶，一缕晨光，一句简单的问候，都是生活递来的温柔信笺。它们不喧哗，却足以抚平心头的褶皱。人生并非总要轰轰烈烈，学会在平凡中驻足，在细碎里拾光，便已是一种难得的清醒。那些看似微不足道的瞬间，恰恰是</p>
-                    <div class="card-footer">
-                        <span class="card-meta">⏱ 2 min</span>
-                        <a href="/happy-daily-website/posts/life-1776304963646.html" class="card-link">阅读 <span>→</span></a>
-                    </div>
-                </article>
-            
-                <article class="card fade-up" style="animation-delay: 2.1s">
-                    <div class="card-header">
-                        <span class="tag tag-tech">科技</span>
-                        <span class="card-date">2026/4/16</span>
-                    </div>
-                    <h3><a href="/happy-daily-website/posts/tech-1776304899514.html">近期，“AI PC”（人工智能个人电脑）成为科技行业的重要趋...</a></h3>
-                    <p class="card-excerpt">该产品的核心特点是“端侧AI推理”。NPU与CPU、GPU协同调度，显著降低AI任务的功耗与响应延迟。主流机型已支持语音转写、文档摘要、图像生成、代码补全等功能，多数操作可在断网或弱网环境下完成。厂商</p>
-                    <div class="card-footer">
-                        <span class="card-meta">⏱ 2 min</span>
-                        <a href="/happy-daily-website/posts/tech-1776304899514.html" class="card-link">阅读 <span>→</span></a>
-                    </div>
-                </article>
-            
-                <article class="card fade-up" style="animation-delay: 2.15s">
-                    <div class="card-header">
-                        <span class="tag tag-ai">AI</span>
-                        <span class="card-date">2026/4/16</span>
-                    </div>
-                    <h3><a href="/happy-daily-website/posts/ai-1776304874859.html">今日AI新突破：从“会聊天”到“能干活”的智能跃迁</a></h3>
-                    <p class="card-excerpt">如果你最近关注科技动态，可能会频繁听到“AI智能体”一词。这并非科幻设定，而是当前人工智能领域最具代表性的突破。过去的大模型擅长写文案、答问题，如今它们正迈出关键一步：不仅能理解复杂指令，还能自主规划</p>
-                    <div class="card-footer">
-                        <span class="card-meta">⏱ 3 min</span>
-                        <a href="/happy-daily-website/posts/ai-1776304874859.html" class="card-link">阅读 <span>→</span></a>
-                    </div>
-                </article>
-            
-                <article class="card fade-up" style="animation-delay: 2.2s">
-                    <div class="card-header">
-                        <span class="tag tag-tools">效率工具</span>
-                        <span class="card-date">2026/4/15</span>
-                    </div>
-                    <h3><a href="/happy-daily-website/posts/tools-1776222085064.html">推荐采用“时间块工作法”（Time Blocking）配合数...</a></h3>
-                    <p class="card-excerpt">实操分四步：
-第一，晨间任务分拣。开工前用10分钟，将待办事项按“产出导向”归类，剔除可委派或延后项，严格保留3-5项核心任务，确保精力不分散。
-第二，日历区块化排期</p>
-                    <div class="card-footer">
-                        <span class="card-meta">⏱ 2 min</span>
-                        <a href="/happy-daily-website/posts/tools-1776222085064.html" class="card-link">阅读 <span>→</span></a>
-                    </div>
-                </article>
-            
-                <article class="card fade-up" style="animation-delay: 2.25s">
-                    <div class="card-header">
-                        <span class="tag tag-life">生活灵感</span>
-                        <span class="card-date">2026/4/15</span>
-                    </div>
-                    <h3><a href="/happy-daily-website/posts/life-1776222032473.html">在快节奏的日常里，我们常被“必须更快”“应该更好”的声音推着...</a></h3>
-                    <p class="card-excerpt">生活方式，往往是内心的外化。当我们允许自己偶尔停顿，不再把休息视为懈怠，而是视作蓄力的必需，焦虑便会悄然退潮。一杯温茶、一段散步、一次专注的深呼吸，都是无声的自我疗愈。不必追求极致的效率，也不必</p>
-                    <div class="card-footer">
-                        <span class="card-meta">⏱ 2 min</span>
-                        <a href="/happy-daily-website/posts/life-1776222032473.html" class="card-link">阅读 <span>→</span></a>
-                    </div>
-                </article>
-            
-                <article class="card fade-up" style="animation-delay: 2.3000000000000003s">
-                    <div class="card-header">
-                        <span class="tag tag-tech">科技速递</span>
-                        <span class="card-date">2026/4/15</span>
-                    </div>
-                    <h3><a href="/happy-daily-website/posts/tech-1776221974458.html">近期，“AI PC”（人工智能电脑）成为消费电子与办公硬件领...</a></h3>
-                    <p class="card-excerpt">该技术的核心价值在于效率与安全的双重提升。NPU可独立承担语音识别、图像增强、文档摘要、代码辅助等高频任务，大幅降低主处理器负载，使整机功耗下降15%至30%，续航表现更稳定。主流系统已提供原生</p>
-                    <div class="card-footer">
-                        <span class="card-meta">⏱ 2 min</span>
-                        <a href="/happy-daily-website/posts/tech-1776221974458.html" class="card-link">阅读 <span>→</span></a>
-                    </div>
-                </article>
-            
-                <article class="card fade-up" style="animation-delay: 2.35s">
-                    <div class="card-header">
-                        <span class="tag tag-ai">AI 前沿</span>
-                        <span class="card-date">2026/4/15</span>
-                    </div>
-                    <h3><a href="/happy-daily-website/posts/ai-1776221938292.html">**不眠不休的“AI化学家”：当人工智能走进实验室**</a></h3>
-                    <p class="card-excerpt">想象一下，一位没有咖啡瘾、不会疲惫的“研究员”，能在一天内完成人类科学家一年的试错。这不是科幻电影，而是今天正在加速落地的AI新突破——自主AI实验室。
-过去，科学家研发新材料或新</p>
-                    <div class="card-footer">
-                        <span class="card-meta">⏱ 3 min</span>
-                        <a href="/happy-daily-website/posts/ai-1776221938292.html" class="card-link">阅读 <span>→</span></a>
-                    </div>
-                </article>
-            
-                <article class="card fade-up" style="animation-delay: 2.4000000000000004s">
-                    <div class="card-header">
-                        <span class="tag tag-ai">AI</span>
-                        <span class="card-date">4/29/2026</span>
-                    </div>
-                    <h3><a href="/happy-daily-website/posts/ai-1777428070614.html">AI智能体迈向自主协作</a></h3>
-                    <p class="card-excerpt">AI智能体正从独立执行走向多角色协同，通过角色定义和通信协议实现类似人类团队的分工合作。</p>
-                    <div class="card-footer">
-                        <span class="card-meta">⏱ 3 min</span>
-                        <a href="/happy-daily-website/posts/ai-1777428070614.html" class="card-link">阅读 <span>→</span></a>
-                    </div>
-                </article>
-            
-                <article class="card fade-up" style="animation-delay: 2.45s">
-                    <div class="card-header">
-                        <span class="tag tag-tech">科技</span>
-                        <span class="card-date">4/29/2026</span>
-                    </div>
-                    <h3><a href="/happy-daily-website/posts/tech-1777428070614.html">固态电池商业化提速</a></h3>
-                    <p class="card-excerpt">固态电池凭借安全性和高能量密度优势，2026年迎来商业化拐点，多家车企公布量产计划。</p>
-                    <div class="card-footer">
-                        <span class="card-meta">⏱ 3 min</span>
-                        <a href="/happy-daily-website/posts/tech-1777428070614.html" class="card-link">阅读 <span>→</span></a>
-                    </div>
-                </article>
-            
-                <article class="card fade-up" style="animation-delay: 2.5s">
-                    <div class="card-header">
-                        <span class="tag tag-life">生活</span>
-                        <span class="card-date">4/29/2026</span>
-                    </div>
-                    <h3><a href="/happy-daily-website/posts/life-1777428070614.html">独处是一种超能力</a></h3>
-                    <p class="card-excerpt">独处不是孤独，而是主动选择的安静。学会独处，在永远在线的时代里就是一种超能力。</p>
-                    <div class="card-footer">
-                        <span class="card-meta">⏱ 3 min</span>
-                        <a href="/happy-daily-website/posts/life-1777428070614.html" class="card-link">阅读 <span>→</span></a>
-                    </div>
-                </article>
-            
-                <article class="card fade-up" style="animation-delay: 2.5500000000000003s">
-                    <div class="card-header">
-                        <span class="tag tag-tools">工具</span>
-                        <span class="card-date">4/29/2026</span>
-                    </div>
-                    <h3><a href="/happy-daily-website/posts/tools-1777428070614.html">第二大脑构建方法论</a></h3>
-                    <p class="card-excerpt">通过捕获、组织、精炼、输出四步构建个人数字知识库，让大脑专注于思考而非记忆。</p>
-                    <div class="card-footer">
-                        <span class="card-meta">⏱ 3 min</span>
-                        <a href="/happy-daily-website/posts/tools-1777428070614.html" class="card-link">阅读 <span>→</span></a>
-                    </div>
-                </article>
-            
+        
+        <div class="timeline-wrapper">
+            <nav class="timeline-nav fade-up">
+                <div class="timeline-nav-title">快速定位</div>
+                <div class="timeline-nav-list">
+                    
+                        <a href="#d0" class="timeline-nav-item active" data-date="d0">
+                            <span class="timeline-nav-dot"></span>
+                            <span>2026/5/9</span>
+                        </a>
+                    
+                        <a href="#d1" class="timeline-nav-item " data-date="d1">
+                            <span class="timeline-nav-dot"></span>
+                            <span>5/8/2026</span>
+                        </a>
+                    
+                        <a href="#d2" class="timeline-nav-item " data-date="d2">
+                            <span class="timeline-nav-dot"></span>
+                            <span>5/7/2026</span>
+                        </a>
+                    
+                        <a href="#d3" class="timeline-nav-item " data-date="d3">
+                            <span class="timeline-nav-dot"></span>
+                            <span>5/6/2026</span>
+                        </a>
+                    
+                        <a href="#d4" class="timeline-nav-item " data-date="d4">
+                            <span class="timeline-nav-dot"></span>
+                            <span>5/5/2026</span>
+                        </a>
+                    
+                        <a href="#d5" class="timeline-nav-item " data-date="d5">
+                            <span class="timeline-nav-dot"></span>
+                            <span>5/4/2026</span>
+                        </a>
+                    
+                        <a href="#d6" class="timeline-nav-item " data-date="d6">
+                            <span class="timeline-nav-dot"></span>
+                            <span>5/3/2026</span>
+                        </a>
+                    
+                        <a href="#d7" class="timeline-nav-item " data-date="d7">
+                            <span class="timeline-nav-dot"></span>
+                            <span>5/2/2026</span>
+                        </a>
+                    
+                        <a href="#d8" class="timeline-nav-item " data-date="d8">
+                            <span class="timeline-nav-dot"></span>
+                            <span>5/1/2026</span>
+                        </a>
+                    
+                        <a href="#d9" class="timeline-nav-item " data-date="d9">
+                            <span class="timeline-nav-dot"></span>
+                            <span>4/30/2026</span>
+                        </a>
+                    
+                        <a href="#d10" class="timeline-nav-item " data-date="d10">
+                            <span class="timeline-nav-dot"></span>
+                            <span>4/29/2026</span>
+                        </a>
+                    
+                        <a href="#d11" class="timeline-nav-item " data-date="d11">
+                            <span class="timeline-nav-dot"></span>
+                            <span>4/28/2026</span>
+                        </a>
+                    
+                        <a href="#d12" class="timeline-nav-item " data-date="d12">
+                            <span class="timeline-nav-dot"></span>
+                            <span>4/26/2026</span>
+                        </a>
+                    
+                        <a href="#d13" class="timeline-nav-item " data-date="d13">
+                            <span class="timeline-nav-dot"></span>
+                            <span>2026/4/25</span>
+                        </a>
+                    
+                        <a href="#d14" class="timeline-nav-item " data-date="d14">
+                            <span class="timeline-nav-dot"></span>
+                            <span>2026/4/24</span>
+                        </a>
+                    
+                        <a href="#d15" class="timeline-nav-item " data-date="d15">
+                            <span class="timeline-nav-dot"></span>
+                            <span>2026/4/23</span>
+                        </a>
+                    
+                        <a href="#d16" class="timeline-nav-item " data-date="d16">
+                            <span class="timeline-nav-dot"></span>
+                            <span>2026/4/22</span>
+                        </a>
+                    
+                        <a href="#d17" class="timeline-nav-item " data-date="d17">
+                            <span class="timeline-nav-dot"></span>
+                            <span>2026/4/21</span>
+                        </a>
+                    
+                        <a href="#d18" class="timeline-nav-item " data-date="d18">
+                            <span class="timeline-nav-dot"></span>
+                            <span>2026/4/20</span>
+                        </a>
+                    
+                        <a href="#d19" class="timeline-nav-item " data-date="d19">
+                            <span class="timeline-nav-dot"></span>
+                            <span>2026/4/17</span>
+                        </a>
+                    
+                        <a href="#d20" class="timeline-nav-item " data-date="d20">
+                            <span class="timeline-nav-dot"></span>
+                            <span>2026/4/16</span>
+                        </a>
+                    
+                        <a href="#d21" class="timeline-nav-item " data-date="d21">
+                            <span class="timeline-nav-dot"></span>
+                            <span>2026/4/15</span>
+                        </a>
+                    
+                </div>
+            </nav>
+            <div class="timeline">
+                
+                    <div id="d0" class="timeline-date fade-up" style="animation-delay: 0s">
+                        <span>2026/5/9</span>
+                    </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 0s">
+                            <div class="timeline-content">
+                                <span class="tag tag-tools">工具</span>
+                                <h4><a href="/posts/tools-1778292723187.html">离线番茄工作法</a></h4>
+                                <p>提升工作效率的核心在于专注力的精准分配。推荐采用“离线番茄工作法”，该方案完全脱离网络账号与云端同步，零数据上传，彻底杜绝隐私泄露隐患，且具备极强的落地操作性。...</p>
+                            </div>
+                        </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 0.05s">
+                            <div class="timeline-content">
+                                <span class="tag tag-life">生活</span>
+                                <h4><a href="/posts/life-1778292663425.html">拾光而行，心向暖阳</a></h4>
+                                <p>生活从不急于给出答案，它只将细碎的日常铺展成一条长长的路。我们在这条路上走走停停，渐渐明白，真正的丰盈并非来自轰轰烈烈的抵达，而是藏在一粥一饭的烟火里，藏在一朝...</p>
+                            </div>
+                        </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 0.1s">
+                            <div class="timeline-content">
+                                <span class="tag tag-tech">科技</span>
+                                <h4><a href="/posts/tech-1778292592201.html">人工智能电脑普及趋势</a></h4>
+                                <p>近期，搭载专用神经网络处理器的设备成为消费电子与商用市场的重要趋势。此类电脑在传统中央处理器之外集成独立AI运算单元，主要面向本地大模型运行与多模态任务处理。与...</p>
+                            </div>
+                        </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 0.15000000000000002s">
+                            <div class="timeline-content">
+                                <span class="tag tag-ai">AI</span>
+                                <h4><a href="/posts/ai-1778292517165.html">人工智能推理新突破</a></h4>
+                                <p>今日，人工智能领域再次传来令人振奋的消息。多家研究机构同步宣布，新一代大模型在复杂逻辑推理与跨模态理解上实现重要跨越。简单来说，AI不再只是“背诵答案”，而是开...</p>
+                            </div>
+                        </div>
+                    
+                
+                    <div id="d1" class="timeline-date fade-up" style="animation-delay: 0.1s">
+                        <span>5/8/2026</span>
+                    </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 0.1s">
+                            <div class="timeline-content">
+                                <span class="tag tag-ai">AI</span>
+                                <h4><a href="/posts/ai-1746690360000.html">AI Agent元年：从&#34;聊天助手&#34;到&#34;数字同事&#34;</a></h4>
+                                <p>AI Agent从对话层迈向行动执行层，多智能体协作架构让企业实现&#34;一人即公司&#34;，2026年成为智能体成熟元年。...</p>
+                            </div>
+                        </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 0.15000000000000002s">
+                            <div class="timeline-content">
+                                <span class="tag tag-tech">科技</span>
+                                <h4><a href="/posts/tech-1746690360001.html">端侧AI崛起：你的下一台设备，不需要联网也聪明</a></h4>
+                                <p>AI从云端下沉到终端设备，NPU算力突破让离线AI成为可能，智能眼镜成为端侧AI最具潜力的载体。...</p>
+                            </div>
+                        </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 0.2s">
+                            <div class="timeline-content">
+                                <span class="tag tag-life">生活</span>
+                                <h4><a href="/posts/life-1746690360002.html">慢下来，是最高级的自律</a></h4>
+                                <p>在崇尚快的时代，慢下来是最高级的自律。真正重要的事需要时间沉淀，那些看似停滞的日子正是根系延伸的时刻。...</p>
+                            </div>
+                        </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 0.25s">
+                            <div class="timeline-content">
+                                <span class="tag tag-tools">工具</span>
+                                <h4><a href="/posts/tools-1746690360003.html">时间块工作法：用&#34;块状时间&#34;代替&#34;碎片时间&#34;</a></h4>
+                                <p>时间块工作法通过批量处理同类任务减少上下文切换，让大脑保持稳定工作节奏，坚持两周可显著提升效率。...</p>
+                            </div>
+                        </div>
+                    
+                
+                    <div id="d2" class="timeline-date fade-up" style="animation-delay: 0.2s">
+                        <span>5/7/2026</span>
+                    </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 0.2s">
+                            <div class="timeline-content">
+                                <span class="tag tag-ai">AI</span>
+                                <h4><a href="/posts/ai-1778119200000.html">多智能体协作突破单模型极限</a></h4>
+                                <p>多个专精AI模型通过结构化协作完成复杂任务，类似人类团队分工，在软件开发等领域已展现实用价值。...</p>
+                            </div>
+                        </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 0.25s">
+                            <div class="timeline-content">
+                                <span class="tag tag-tech">科技</span>
+                                <h4><a href="/posts/tech-1778119200000.html">卫星互联网覆盖全球死角</a></h4>
+                                <p>低轨道卫星互联网延迟降至二十毫秒，终端缩小到笔记本大小，让全球任何角落都能高速上网。...</p>
+                            </div>
+                        </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 0.30000000000000004s">
+                            <div class="timeline-content">
+                                <span class="tag tag-life">生活</span>
+                                <h4><a href="/posts/life-1778119200000.html">给情绪一个出口</a></h4>
+                                <p>情绪不能无限压缩，写下来、动起来、说出来、甚至哭出来，都是给它找到安放的方式。...</p>
+                            </div>
+                        </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 0.35000000000000003s">
+                            <div class="timeline-content">
+                                <span class="tag tag-tools">工具</span>
+                                <h4><a href="/posts/tools-1778119200000.html">笔记系统的断舍离</a></h4>
+                                <p>笔记的价值在于使用频率而非数量，建立定期清理机制，让笔记系统真正服务于思考。...</p>
+                            </div>
+                        </div>
+                    
+                
+                    <div id="d3" class="timeline-date fade-up" style="animation-delay: 0.30000000000000004s">
+                        <span>5/6/2026</span>
+                    </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 0.30000000000000004s">
+                            <div class="timeline-content">
+                                <span class="tag tag-ai">AI</span>
+                                <h4><a href="/posts/ai-1778032800000.html">AI 编程助手进入自主开发时代</a></h4>
+                                <p>新一代AI编程助手能独立完成需求分析、编码、测试全流程，从代码补全进化为AI程序员。...</p>
+                            </div>
+                        </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 0.35000000000000003s">
+                            <div class="timeline-content">
+                                <span class="tag tag-tech">科技</span>
+                                <h4><a href="/posts/tech-1778032800000.html">脑机接口从医疗走向消费级</a></h4>
+                                <p>非侵入式脑机接口设备实现专注度检测、睡眠管理和注意力训练，开始进入消费市场。...</p>
+                            </div>
+                        </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 0.4s">
+                            <div class="timeline-content">
+                                <span class="tag tag-life">生活</span>
+                                <h4><a href="/posts/life-1778032800000.html">整理房间就是整理内心</a></h4>
+                                <p>物理空间秩序感与内心秩序紧密相连，整理房间是面对自己的过程，也是对抗失控感的有效方式。...</p>
+                            </div>
+                        </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 0.45000000000000007s">
+                            <div class="timeline-content">
+                                <span class="tag tag-tools">工具</span>
+                                <h4><a href="/posts/tools-1778032800000.html">自动化你的重复性工作</a></h4>
+                                <p>任何重复三次以上的任务都值得自动化，让机器做机器擅长的，让人做人擅长的事。...</p>
+                            </div>
+                        </div>
+                    
+                
+                    <div id="d4" class="timeline-date fade-up" style="animation-delay: 0.4s">
+                        <span>5/5/2026</span>
+                    </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 0.4s">
+                            <div class="timeline-content">
+                                <span class="tag tag-ai">AI</span>
+                                <h4><a href="/posts/ai-1777946479355.html">AI多模态迎来融合新纪元</a></h4>
+                                <p>统一表示空间让AI同时理解视觉、文本和音频，从拼接走向真正的跨模态融合。...</p>
+                            </div>
+                        </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 0.45s">
+                            <div class="timeline-content">
+                                <span class="tag tag-tech">科技</span>
+                                <h4><a href="/posts/tech-1777946479355.html">折叠屏走向全面普及</a></h4>
+                                <p>超薄玻璃和磁悬浮铰链解决了折叠屏三大痛点，价格下探使其从尝鲜走向主流。...</p>
+                            </div>
+                        </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 0.5s">
+                            <div class="timeline-content">
+                                <span class="tag tag-life">生活</span>
+                                <h4><a href="/posts/life-1777946479355.html">傍晚散步的治愈力</a></h4>
+                                <p>傍晚二十分钟散步释放内啡肽、调节生物钟、激活创造力，是最被低估的日常习惯。...</p>
+                            </div>
+                        </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 0.55s">
+                            <div class="timeline-content">
+                                <span class="tag tag-tools">工具</span>
+                                <h4><a href="/posts/tools-1777946479355.html">建立你的第二大脑</a></h4>
+                                <p>把外部工具当作记忆延伸，用CODE框架捕捉、组织、提炼信息，释放大脑的创造力。...</p>
+                            </div>
+                        </div>
+                    
+                
+                    <div id="d5" class="timeline-date fade-up" style="animation-delay: 0.5s">
+                        <span>5/4/2026</span>
+                    </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 0.5s">
+                            <div class="timeline-content">
+                                <span class="tag tag-ai">AI</span>
+                                <h4><a href="/posts/ai-1777860115877.html">AI Agent 自主决策能力突破</a></h4>
+                                <p>新一代AI Agent具备规划、执行、反思的完整闭环，能独立完成复杂任务链并自我纠错。...</p>
+                            </div>
+                        </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 0.55s">
+                            <div class="timeline-content">
+                                <span class="tag tag-tech">科技</span>
+                                <h4><a href="/posts/tech-1777860115877.html">固态电池量产提速</a></h4>
+                                <p>固态电池突破界面接触难题，能量密度和安全性全面超越传统锂电池，电动汽车续航有望突破一千公里。...</p>
+                            </div>
+                        </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 0.6s">
+                            <div class="timeline-content">
+                                <span class="tag tag-life">生活</span>
+                                <h4><a href="/posts/life-1777860115877.html">留白的艺术</a></h4>
+                                <p>有意识地保留生活中的不确定空间，让灵感在缝隙中自然生长，体验的深度比任务的密度更重要。...</p>
+                            </div>
+                        </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 0.65s">
+                            <div class="timeline-content">
+                                <span class="tag tag-tools">工具</span>
+                                <h4><a href="/posts/tools-1777860115877.html">用时间块重塑工作日</a></h4>
+                                <p>时间块方法将一天划分为深度工作、浅层工作和恢复三类时段，主动掌控节奏而非被任务推着走。...</p>
+                            </div>
+                        </div>
+                    
+                
+                    <div id="d6" class="timeline-date fade-up" style="animation-delay: 0.6000000000000001s">
+                        <span>5/3/2026</span>
+                    </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 0.6000000000000001s">
+                            <div class="timeline-content">
+                                <span class="tag tag-ai">AI</span>
+                                <h4><a href="/posts/ai-1777773600000.html">大模型推理能力再进化</a></h4>
+                                <p>推理增强训练让大模型更注重思考过程而非死记硬背，数学推理准确率提升约百分之二十。...</p>
+                            </div>
+                        </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 0.6500000000000001s">
+                            <div class="timeline-content">
+                                <span class="tag tag-tech">科技</span>
+                                <h4><a href="/posts/tech-1777773600000.html">无线充电进入空间时代</a></h4>
+                                <p>毫米波波束成形技术实现数米距离隔空充电，手机走进房间即自动充电。...</p>
+                            </div>
+                        </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 0.7000000000000001s">
+                            <div class="timeline-content">
+                                <span class="tag tag-life">生活</span>
+                                <h4><a href="/posts/life-1777773600000.html">好好吃饭是最小的仪式感</a></h4>
+                                <p>每天三次认真吃饭，是强制慢下来的时刻，也是对抗焦虑的最简单的仪式感。...</p>
+                            </div>
+                        </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 0.7500000000000001s">
+                            <div class="timeline-content">
+                                <span class="tag tag-tools">工具</span>
+                                <h4><a href="/posts/tools-1777773600000.html">两分钟法则终结拖延</a></h4>
+                                <p>两分钟内的事立刻执行，超过两分钟的事用两分钟启动，用最低成本终结拖延。...</p>
+                            </div>
+                        </div>
+                    
+                
+                    <div id="d7" class="timeline-date fade-up" style="animation-delay: 0.7000000000000001s">
+                        <span>5/2/2026</span>
+                    </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 0.7000000000000001s">
+                            <div class="timeline-content">
+                                <span class="tag tag-ai">AI</span>
+                                <h4><a href="/posts/ai-1777687221892.html">AI推理模型走向实用化</a></h4>
+                                <p>新一代AI模型引入验证层机制，推理准确率提升近百分之三十，在医疗、法律等高精度场景实现可用。...</p>
+                            </div>
+                        </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 0.7500000000000001s">
+                            <div class="timeline-content">
+                                <span class="tag tag-tech">科技</span>
+                                <h4><a href="/posts/tech-1777687221892.html">量子计算进入应用元年</a></h4>
+                                <p>量子计算2026年进入实际应用阶段，在药物研发和金融风控等领域展现出独特优势。...</p>
+                            </div>
+                        </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 0.8s">
+                            <div class="timeline-content">
+                                <span class="tag tag-life">生活</span>
+                                <h4><a href="/posts/life-1777687221892.html">阅读是最低成本的远行</a></h4>
+                                <p>阅读用最低代价换取最丰富的人生体验，深度专注的状态本身就是一种精神训练。...</p>
+                            </div>
+                        </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 0.8500000000000001s">
+                            <div class="timeline-content">
+                                <span class="tag tag-tools">工具</span>
+                                <h4><a href="/posts/tools-1777687221892.html">PARA笔记法整理人生</a></h4>
+                                <p>PARA框架按可行动性组织笔记，让信息随生活阶段流转，从仓库变成随手可用的工具箱。...</p>
+                            </div>
+                        </div>
+                    
+                
+                    <div id="d8" class="timeline-date fade-up" style="animation-delay: 0.8s">
+                        <span>5/1/2026</span>
+                    </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 0.8s">
+                            <div class="timeline-content">
+                                <span class="tag tag-ai">AI</span>
+                                <h4><a href="/posts/ai-1777600861159.html">AI智能体走向自主协作</a></h4>
+                                <p>多个AI智能体通过分工协作处理复杂任务，将开发和分析周期大幅压缩。...</p>
+                            </div>
+                        </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 0.8500000000000001s">
+                            <div class="timeline-content">
+                                <span class="tag tag-tech">科技</span>
+                                <h4><a href="/posts/tech-1777600861159.html">固态电池量产加速</a></h4>
+                                <p>固态电池突破量产门槛，安全性与能量密度双提升，电动汽车续航有望突破千公里。...</p>
+                            </div>
+                        </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 0.9s">
+                            <div class="timeline-content">
+                                <span class="tag tag-life">生活</span>
+                                <h4><a href="/posts/life-1777600861159.html">散步是最低成本的心理按摩</a></h4>
+                                <p>散步让大脑进入漫游模式，是切换节奏、释放创造力的最低成本方式。...</p>
+                            </div>
+                        </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 0.9500000000000001s">
+                            <div class="timeline-content">
+                                <span class="tag tag-tools">工具</span>
+                                <h4><a href="/posts/tools-1777600861159.html">用时间盒法终结拖延</a></h4>
+                                <p>时间盒法用固定时段替代模糊截止日期，降低启动门槛，终结拖延。...</p>
+                            </div>
+                        </div>
+                    
+                
+                    <div id="d9" class="timeline-date fade-up" style="animation-delay: 0.9s">
+                        <span>4/30/2026</span>
+                    </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 0.9s">
+                            <div class="timeline-content">
+                                <span class="tag tag-ai">AI</span>
+                                <h4><a href="/posts/ai-1777514475818.html">开源大模型重塑AI格局</a></h4>
+                                <p>开源大模型在核心指标上比肩顶尖闭源模型，正以透明协作的范式重塑AI产业格局。...</p>
+                            </div>
+                        </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 0.9500000000000001s">
+                            <div class="timeline-content">
+                                <span class="tag tag-tech">科技</span>
+                                <h4><a href="/posts/tech-1777514475818.html">柔性电子皮肤迎来突破</a></h4>
+                                <p>柔性电子皮肤融合新型材料与打印工艺，正从概念走向健康监测和康复医学的实际应用。...</p>
+                            </div>
+                        </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 1s">
+                            <div class="timeline-content">
+                                <span class="tag tag-life">生活</span>
+                                <h4><a href="/posts/life-1777514475818.html">把平凡的日子过出滋味</a></h4>
+                                <p>生活的滋味不在于经历多少大事，而在于能不能在小事里品出味道，把普通的日子过得有密度。...</p>
+                            </div>
+                        </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 1.05s">
+                            <div class="timeline-content">
+                                <span class="tag tag-tools">工具</span>
+                                <h4><a href="/posts/tools-1777514475818.html">笔记双链法激活知识</a></h4>
+                                <p>双链笔记法通过笔记间的双向链接构建知识网络，让零散信息转化为可涌现洞察的智慧系统。...</p>
+                            </div>
+                        </div>
+                    
+                
+                    <div id="d10" class="timeline-date fade-up" style="animation-delay: 1s">
+                        <span>4/29/2026</span>
+                    </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 1s">
+                            <div class="timeline-content">
+                                <span class="tag tag-ai">AI</span>
+                                <h4><a href="/posts/ai-1777428070614.html">AI智能体迈向自主协作</a></h4>
+                                <p>AI智能体正从独立执行走向多角色协同，通过角色定义和通信协议实现类似人类团队的分工合作。...</p>
+                            </div>
+                        </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 1.05s">
+                            <div class="timeline-content">
+                                <span class="tag tag-tech">科技</span>
+                                <h4><a href="/posts/tech-1777428070614.html">固态电池商业化提速</a></h4>
+                                <p>固态电池凭借安全性和高能量密度优势，2026年迎来商业化拐点，多家车企公布量产计划。...</p>
+                            </div>
+                        </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 1.1s">
+                            <div class="timeline-content">
+                                <span class="tag tag-life">生活</span>
+                                <h4><a href="/posts/life-1777428070614.html">独处是一种超能力</a></h4>
+                                <p>独处不是孤独，而是主动选择的安静。学会独处，在永远在线的时代里就是一种超能力。...</p>
+                            </div>
+                        </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 1.15s">
+                            <div class="timeline-content">
+                                <span class="tag tag-tools">工具</span>
+                                <h4><a href="/posts/tools-1777428070614.html">第二大脑构建方法论</a></h4>
+                                <p>通过捕获、组织、精炼、输出四步构建个人数字知识库，让大脑专注于思考而非记忆。...</p>
+                            </div>
+                        </div>
+                    
+                
+                    <div id="d11" class="timeline-date fade-up" style="animation-delay: 1.1s">
+                        <span>4/28/2026</span>
+                    </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 1.1s">
+                            <div class="timeline-content">
+                                <span class="tag tag-ai">AI</span>
+                                <h4><a href="/posts/ai-1777341664499.html">多模态大模型走向融合</a></h4>
+                                <p>多模态大模型正从拼接式走向原生融合，统一训练框架让模型同时理解文本、图像、音频和视频。...</p>
+                            </div>
+                        </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 1.1500000000000001s">
+                            <div class="timeline-content">
+                                <span class="tag tag-tech">科技</span>
+                                <h4><a href="/posts/tech-1777341664499.html">MicroLED显示技术加速普及</a></h4>
+                                <p>MicroLED显示技术突破巨量转移瓶颈，良率提升至95%以上，正从大尺寸电视和车载领域加速普及。...</p>
+                            </div>
+                        </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 1.2000000000000002s">
+                            <div class="timeline-content">
+                                <span class="tag tag-life">生活</span>
+                                <h4><a href="/posts/life-1777341664499.html">慢下来的力量</a></h4>
+                                <p>崇尚速度的时代里，慢下来不是浪费时间，而是给生活留出呼吸的空间，积累内心的从容。...</p>
+                            </div>
+                        </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 1.25s">
+                            <div class="timeline-content">
+                                <span class="tag tag-tools">工具</span>
+                                <h4><a href="/posts/tools-1777341664499.html">GTD工作法实操指南</a></h4>
+                                <p>GTD通过收集、整理、组织、回顾、执行五步清空大脑，让注意力回归任务执行，有效降低焦虑。...</p>
+                            </div>
+                        </div>
+                    
+                
+                    <div id="d12" class="timeline-date fade-up" style="animation-delay: 1.2000000000000002s">
+                        <span>4/26/2026</span>
+                    </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 1.2000000000000002s">
+                            <div class="timeline-content">
+                                <span class="tag tag-ai">AI</span>
+                                <h4><a href="/posts/ai-latest.html">AI编程助手进入推理时代</a></h4>
+                                <p>2026年，AI编程助手正在经历一场从代码补全到代码推理的质变，开发时间平均缩短40%-60%。...</p>
+                            </div>
+                        </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 1.2500000000000002s">
+                            <div class="timeline-content">
+                                <span class="tag tag-tech">科技</span>
+                                <h4><a href="/posts/tech-latest.html">空间计算走进日常</a></h4>
+                                <p>空间计算正在从极客玩具变成真正的生产力工具，在工业、医疗、教育领域加速落地。...</p>
+                            </div>
+                        </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 1.3000000000000003s">
+                            <div class="timeline-content">
+                                <span class="tag tag-life">生活</span>
+                                <h4><a href="/posts/life-latest.html">留白的力量</a></h4>
+                                <p>信息过载的时代，留白不是浪费时间，而是大脑的后台处理时间，帮助整理记忆和产生创意。...</p>
+                            </div>
+                        </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 1.35s">
+                            <div class="timeline-content">
+                                <span class="tag tag-tools">工具</span>
+                                <h4><a href="/posts/tools-latest.html">用时间盒法拯救专注力</a></h4>
+                                <p>时间盒法通过固定时间块专注单任务，有效对抗拖延和分心，是提升专注力的实用方法。...</p>
+                            </div>
+                        </div>
+                    
+                
+                    <div id="d13" class="timeline-date fade-up" style="animation-delay: 1.3s">
+                        <span>2026/4/25</span>
+                    </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 1.3s">
+                            <div class="timeline-content">
+                                <span class="tag tag-tools">工具</span>
+                                <h4><a href="/posts/tools-1777082714257.html">番茄工作法实操指南</a></h4>
+                                <p>番茄工作法通过“专注与休息”的节奏切换，有效对抗拖延与精力耗散。实操仅需三步：
+第一步，明确单一任务。动笔前将待办事项写在实体便签上，每次仅锁定一项。例如“撰写...</p>
+                            </div>
+                        </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 1.35s">
+                            <div class="timeline-content">
+                                <span class="tag tag-life">生活</span>
+                                <h4><a href="/posts/life-1777082640402.html">日子有光，心中有暖</a></h4>
+                                <p>生活如同一幅徐徐展开的长卷，不必急于填满每一处留白，只需用心感受每一笔的起承转合。我们常在匆忙的步履中忘了抬头，却不知晨光已悄然爬上窗棂，微风正轻拂过街角的树梢...</p>
+                            </div>
+                        </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 1.4000000000000001s">
+                            <div class="timeline-content">
+                                <span class="tag tag-tech">科技</span>
+                                <h4><a href="/posts/tech-1777082569862.html">端侧AI手机技术解析</a></h4>
+                                <p>近年来，端侧人工智能手机成为消费电子领域的重要趋势。与传统依赖云端算力的AI功能不同，端侧AI手机将大语言模型及多模态算法直接部署于设备本地芯片。行业联盟已逐步...</p>
+                            </div>
+                        </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 1.4500000000000002s">
+                            <div class="timeline-content">
+                                <span class="tag tag-ai">AI</span>
+                                <h4><a href="/posts/ai-1777082499218.html">智能体突破：自主执行新时代</a></h4>
+                                <p>今天，人工智能领域迎来一项令人瞩目的进展：新一代“智能体”技术正式跨越关键门槛，让AI从“只会对话问答”走向“能独立完成任务”。过去我们熟悉的AI，大多停留在内...</p>
+                            </div>
+                        </div>
+                    
+                
+                    <div id="d14" class="timeline-date fade-up" style="animation-delay: 1.4000000000000001s">
+                        <span>2026/4/24</span>
+                    </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 1.4000000000000001s">
+                            <div class="timeline-content">
+                                <span class="tag tag-tools">工具</span>
+                                <h4><a href="/posts/tools-1776996438121.html">时间块管理法</a></h4>
+                                <p>提升效率的核心不在于延长工时，而在于掌控时间流向。时间块管理法通过将全天划分为固定时长的专注区块，有效切断碎片化干扰，全程可离线操作，彻底规避数据隐私风险。
+实...</p>
+                            </div>
+                        </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 1.4500000000000002s">
+                            <div class="timeline-content">
+                                <span class="tag tag-life">生活</span>
+                                <h4><a href="/posts/life-1776996369236.html">岁月生香，心向暖阳</a></h4>
+                                <p>时光如一条静静流淌的河，不疾不徐，却总在不经意间雕琢出生命的轮廓。生活并非总是波澜壮阔，更多时候，它是清晨窗台上的一缕微光，是午后书页间的一阵清风，是傍晚街角飘...</p>
+                            </div>
+                        </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 1.5000000000000002s">
+                            <div class="timeline-content">
+                                <span class="tag tag-tech">科技</span>
+                                <h4><a href="/posts/tech-1776996301138.html">端侧人工智能电脑趋势</a></h4>
+                                <p>端侧智能电脑正成为消费电子与办公设备领域的重要趋势。与传统依赖云端服务器的计算模式不同，新一代AI电脑在主板中集成了专用神经网络处理单元，可在设备本地高效运行大...</p>
+                            </div>
+                        </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 1.5500000000000003s">
+                            <div class="timeline-content">
+                                <span class="tag tag-ai">AI</span>
+                                <h4><a href="/posts/ai-1776996236633.html">智能推理模型新突破</a></h4>
+                                <p>近日，人工智能领域迎来一项备受瞩目的进展：新一代推理模型正式亮相。与以往只能“照本宣科”的对话程序不同，这类新架构学会了“慢思考”。面对复杂问题时，它们不再急于...</p>
+                            </div>
+                        </div>
+                    
+                
+                    <div id="d15" class="timeline-date fade-up" style="animation-delay: 1.5s">
+                        <span>2026/4/23</span>
+                    </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 1.5s">
+                            <div class="timeline-content">
+                                <span class="tag tag-tools">工具</span>
+                                <h4><a href="/posts/tools-1776910467220.html">时间块工作法实战指南</a></h4>
+                                <p>时间块工作法的核心是将一天划分为若干独立时段，每段仅专注同类任务，从而彻底消除任务切换带来的隐形损耗。实操只需三步：清晨预留十分钟列出当日待办，按认知负荷归类为...</p>
+                            </div>
+                        </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 1.55s">
+                            <div class="timeline-content">
+                                <span class="tag tag-life">生活</span>
+                                <h4><a href="/posts/life-1776910397116.html">《岁月生香，心向暖阳》</a></h4>
+                                <p>生活从不是一场匆忙的奔赴，而是一次次与平凡相拥的旅程。晨光透过半掩的窗棂，落在桌角的素瓷杯上，氤氲的热气缓缓升起，仿佛在轻声提醒：日子本就藏着不动声色的温柔。我...</p>
+                            </div>
+                        </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 1.6s">
+                            <div class="timeline-content">
+                                <span class="tag tag-tech">科技</span>
+                                <h4><a href="/posts/tech-1776910310956.html">端侧人工智能电脑成新趋势</a></h4>
+                                <p>端侧AI电脑是近期科技市场的重要发展方向，指内置专用神经网络处理单元的个人计算机。与传统依赖云端算力的设备不同，该类产品将生成式模型直接部署于本地硬件，实现低延...</p>
+                            </div>
+                        </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 1.65s">
+                            <div class="timeline-content">
+                                <span class="tag tag-ai">AI</span>
+                                <h4><a href="/posts/ai-1776910233310.html">智能推理迈入新纪元</a></h4>
+                                <p>今天的人工智能正经历一场静悄悄的蜕变。如果说过去的模型擅长“记忆与模仿”，那么如今的突破则让它真正学会了“思考与推理”。近期，多家研究机构相继推出新一代基础架构...</p>
+                            </div>
+                        </div>
+                    
+                
+                    <div id="d16" class="timeline-date fade-up" style="animation-delay: 1.6s">
+                        <span>2026/4/22</span>
+                    </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 1.6s">
+                            <div class="timeline-content">
+                                <span class="tag tag-tools">工具</span>
+                                <h4><a href="/posts/tools-1776824064706.html">时间块工作法</a></h4>
+                                <p>在信息过载的当下，专注力是最稀缺的生产力。时间块工作法通过将全天切割为若干固定时长的任务区块，帮助个体建立清晰的工作节奏。该方案仅需本地日历或纸质手帐即可运行，...</p>
+                            </div>
+                        </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 1.6500000000000001s">
+                            <div class="timeline-content">
+                                <span class="tag tag-life">生活</span>
+                                <h4><a href="/posts/life-1776824002907.html">拾光而行，静待花开</a></h4>
+                                <p>生活从不急于给出答案，它只在我们放慢脚步时，悄悄铺展成诗。晨起的一缕微光，午后的一盏清茶，街角一声善意的问候，皆是岁月无声的馈赠。我们总在追逐远方的风景，却常常...</p>
+                            </div>
+                        </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 1.7000000000000002s">
+                            <div class="timeline-content">
+                                <span class="tag tag-tech">科技</span>
+                                <h4><a href="/posts/tech-1776823906930.html">人工智能电脑趋势解析</a></h4>
+                                <p>近期，人工智能电脑成为消费电子与产业界的核心焦点。与传统个人电脑不同，该设备在主板集成专用神经网络处理单元，并预装轻量化端侧大模型，实现算力向本地迁移。其兴起得...</p>
+                            </div>
+                        </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 1.75s">
+                            <div class="timeline-content">
+                                <span class="tag tag-ai">AI</span>
+                                <h4><a href="/posts/ai-1776823827696.html">让机器学会“思考”的突破</a></h4>
+                                <p>过去几年，人工智能的“聪明”主要体现在能听懂指令、会写文案、能生成图片，但面对需要严密推导的复杂问题，它常常只能“凭概率猜答案”。今日AI领域的最新进展，正是让...</p>
+                            </div>
+                        </div>
+                    
+                
+                    <div id="d17" class="timeline-date fade-up" style="animation-delay: 1.7000000000000002s">
+                        <span>2026/4/21</span>
+                    </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 1.7000000000000002s">
+                            <div class="timeline-content">
+                                <span class="tag tag-tools">工具</span>
+                                <h4><a href="/posts/tools-1776737472644.html">番茄工作法本地化实操指南</a></h4>
+                                <p>推荐将系统自带计时器与本地纯文本清单结合，打造零隐私泄露的高效工作流。该方法无需注册账号，不依赖网络同步，数据完全留存于本机，彻底规避云端泄露风险。
+第一步，搭...</p>
+                            </div>
+                        </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 1.7500000000000002s">
+                            <div class="timeline-content">
+                                <span class="tag tag-life">生活</span>
+                                <h4><a href="/posts/life-1776737363822.html">岁月生花，心向阳光</a></h4>
+                                <p>生活从不是一场急促的奔跑，而是一段从容的漫步。我们总在追逐远方的风景，却常常忘了低头看看脚边悄然绽放的野花。其实，真正的丰盈往往藏在那些不经意的瞬间：清晨窗台上...</p>
+                            </div>
+                        </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 1.8000000000000003s">
+                            <div class="timeline-content">
+                                <span class="tag tag-tech">科技</span>
+                                <h4><a href="/posts/tech-1776737300596.html">端侧智能计算新趋势</a></h4>
+                                <p>近期，消费电子与算力架构正经历从云端向终端迁移的显著转变，端侧大模型已成为行业核心发展方向。该趋势以新一代智能终端为载体，将经过轻量化压缩的通用模型直接部署于本...</p>
+                            </div>
+                        </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 1.85s">
+                            <div class="timeline-content">
+                                <span class="tag tag-ai">AI</span>
+                                <h4><a href="/posts/ai-1776737207046.html">人工智能迈入自主时代</a></h4>
+                                <p>近日，人工智能领域迎来一项标志性进展：模型不再局限于“回答问题”，而是能够主动规划、调用工具并完成复杂任务。这一突破被称为“智能体”技术的成熟，正悄然改变人机交...</p>
+                            </div>
+                        </div>
+                    
+                
+                    <div id="d18" class="timeline-date fade-up" style="animation-delay: 1.8s">
+                        <span>2026/4/20</span>
+                    </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 1.8s">
+                            <div class="timeline-content">
+                                <span class="tag tag-ai">AI</span>
+                                <h4><a href="/posts/ai-1776654384525.html">如果你最近关注科技动态，一定会发现人工智能正以肉眼可见的速度进化。今天的AI，早已不是只会机械应答的“智能助手”，而是迈向了更懂世界、更能规划、更贴近日常的新阶段。几项关键突破，正在悄然重塑我们与机器的互动方式。这些变化并非科幻情节，而是实验室与开源社区日夜迭代的真实成果。</a></h4>
+                                <p>...</p>
+                            </div>
+                        </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 1.85s">
+                            <div class="timeline-content">
+                                <span class="tag tag-tech">科技</span>
+                                <h4><a href="/posts/tech-1776654441760.html">在实际应用中，AI PC已支持文档智能摘要、多语言实时翻译、图像批量处理与代码自动补全等功能。主流机型普遍配备16GB至32GB内存及算力达数十TOPS的NPU，可流畅运行参数量在70亿以下的本地模型。操作系统层面，多数厂商已将AI助手深度集成至文件管理、会议记录与日程规划模块，支持自然语言交互与多任务并行。</a></h4>
+                                <p>...</p>
+                            </div>
+                        </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 1.9000000000000001s">
+                            <div class="timeline-content">
+                                <span class="tag tag-life">生活</span>
+                                <h4><a href="/posts/life-1776654499392.html">日子并非总是波澜壮阔，更多时候是细水长流的平常。一杯温热的清茶、一阵拂过树梢的微风、一句来自陌生人的问候，皆是生活无声递来的善意。学会在平凡中安放身心，便能在喧嚣里听见内心的回音。那些看似重复的日常，实则是时光在悄悄打磨我们的耐心与从容。不必追赶他人的脚步，每个人的生命都有属于自己的节气，春生夏长，秋收冬藏，自有其不可替代的节奏。</a></h4>
+                                <p>...</p>
+                            </div>
+                        </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 1.9500000000000002s">
+                            <div class="timeline-content">
+                                <span class="tag tag-tools">工具</span>
+                                <h4><a href="/posts/tools-1776654585139.html">核心逻辑是将工作日切割为固定时长的“时间块”，每块仅绑定单一任务，从物理层面隔绝多任务切换带来的注意力损耗。实操分三步：</a></h4>
+                                <p>...</p>
+                            </div>
+                        </div>
+                    
+                
+                    <div id="d19" class="timeline-date fade-up" style="animation-delay: 1.9000000000000001s">
+                        <span>2026/4/17</span>
+                    </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 1.9000000000000001s">
+                            <div class="timeline-content">
+                                <span class="tag tag-tools">工具</span>
+                                <h4><a href="/posts/tools-1776391552473.html">推荐“番茄工作法+本地离线计时器”组合。该方法通过“25分钟专注+5分钟休息”的固定节律，强制大脑进入心流状态，有效切割碎片化干扰，提升单位时间产出。</a></h4>
+                                <p>...</p>
+                            </div>
+                        </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 1.9500000000000002s">
+                            <div class="timeline-content">
+                                <span class="tag tag-life">生活</span>
+                                <h4><a href="/posts/life-1776391515362.html">生活从不喧哗，它总在细微处悄悄绽放。清晨窗台的一缕微光，雨后泥土的清新气息，陌生人递来的一把伞，都是岁月无声的馈赠。我们常常步履匆匆，追逐远方的目标，却忘了驻足感受当下的温度。原来最动人的风景，往往藏在那些被忽略的日常里。</a></h4>
+                                <p>...</p>
+                            </div>
+                        </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 2s">
+                            <div class="timeline-content">
+                                <span class="tag tag-tech">科技</span>
+                                <h4><a href="/posts/tech-1776391448164.html">折叠屏手机是近两年持续升温的科技产品趋势。依托柔性OLED屏幕与多段式铰链技术，设备可在直板手机与小尺寸平板间自由切换，兼顾随身便携与大屏可视性。当前主流机型已将重量控制在200克左右，折痕深度明显减弱，并普遍支持IPX8级防水，日常耐用性显著提升。</a></h4>
+                                <p>...</p>
+                            </div>
+                        </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 2.0500000000000003s">
+                            <div class="timeline-content">
+                                <span class="tag tag-ai">AI</span>
+                                <h4><a href="/posts/ai-1776391393567.html">今日AI新跨越：从“能听会说”到“会想会做”</a></h4>
+                                <p>...</p>
+                            </div>
+                        </div>
+                    
+                
+                    <div id="d20" class="timeline-date fade-up" style="animation-delay: 2s">
+                        <span>2026/4/16</span>
+                    </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 2s">
+                            <div class="timeline-content">
+                                <span class="tag tag-tools">工具</span>
+                                <h4><a href="/posts/tools-1776305026486.html">推荐“时间块管理法”（Time Blocking）。该方法将全天划分为若干专属时段，每段仅处理单一类型任务，从根本上切断多任务切换带来的认知损耗。全程可使用本地文件记录，不依赖云端同步，彻底规避隐私泄露风险。</a></h4>
+                                <p>...</p>
+                            </div>
+                        </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 2.05s">
+                            <div class="timeline-content">
+                                <span class="tag tag-life">生活</span>
+                                <h4><a href="/posts/life-1776304963646.html">生活从不急于给出答案，它更像一条缓缓流淌的河，带着岁月的温度，悄然漫过每一寸光阴。我们常在匆忙中追逐远方，却忘了低头看看脚边的花开，听一听风穿过树叶的轻响。其实，最动人的风景，往往藏在那些不被刻意记录的日常里。</a></h4>
+                                <p>...</p>
+                            </div>
+                        </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 2.1s">
+                            <div class="timeline-content">
+                                <span class="tag tag-tech">科技</span>
+                                <h4><a href="/posts/tech-1776304899514.html">近期，“AI PC”（人工智能个人电脑）成为科技行业的重要趋势。与传统电脑不同，AI PC在主板层面集成了专用神经网络处理单元（NPU），可在本地高效运行大语言模型与生成式AI应用，减少对云端算力的依赖。</a></h4>
+                                <p>...</p>
+                            </div>
+                        </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 2.15s">
+                            <div class="timeline-content">
+                                <span class="tag tag-ai">AI</span>
+                                <h4><a href="/posts/ai-1776304874859.html">今日AI新突破：从“会聊天”到“能干活”的智能跃迁</a></h4>
+                                <p>...</p>
+                            </div>
+                        </div>
+                    
+                
+                    <div id="d21" class="timeline-date fade-up" style="animation-delay: 2.1s">
+                        <span>2026/4/15</span>
+                    </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 2.1s">
+                            <div class="timeline-content">
+                                <span class="tag tag-tools">效率工具</span>
+                                <h4><a href="/posts/tools-1776222085064.html">推荐采用“时间块工作法”（Time Blocking）配合数字日历，构建零隐私风险的效率系统。该方法核心是将工作日切割为若干专属时段，每段仅聚焦单一任务类型，从根本上杜绝多任务切换造成的注意力损耗与认知负荷。</a></h4>
+                                <p>...</p>
+                            </div>
+                        </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 2.15s">
+                            <div class="timeline-content">
+                                <span class="tag tag-life">生活灵感</span>
+                                <h4><a href="/posts/life-1776222032473.html">在快节奏的日常里，我们常被“必须更快”“应该更好”的声音推着走，却忘了心灵也需要呼吸的间隙。真正的心理健康，并非永远晴空万里，而是学会在阴晴交替中为自己撑一把伞。它不来自严丝合缝的计划，而源于对生活细微之处的温柔以待。</a></h4>
+                                <p>...</p>
+                            </div>
+                        </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 2.2s">
+                            <div class="timeline-content">
+                                <span class="tag tag-tech">科技速递</span>
+                                <h4><a href="/posts/tech-1776221974458.html">近期，“AI PC”（人工智能电脑）成为消费电子与办公硬件领域的重要趋势。与传统电脑不同，AI PC在硬件架构中集成专用神经网络处理单元（NPU），在操作系统层深度适配本地大模型与AI服务，实现计算范式从“云端集中”向“端侧协同”的演进。</a></h4>
+                                <p>...</p>
+                            </div>
+                        </div>
+                    
+                        <div class="timeline-item fade-up" style="animation-delay: 2.25s">
+                            <div class="timeline-content">
+                                <span class="tag tag-ai">AI 前沿</span>
+                                <h4><a href="/posts/ai-1776221938292.html">**不眠不休的“AI化学家”：当人工智能走进实验室**</a></h4>
+                                <p>...</p>
+                            </div>
+                        </div>
+                    
+                
+            </div>
         </div>
+        <script>
+        (function() {
+            var navItems = document.querySelectorAll('.timeline-nav-item');
+            var dateSections = document.querySelectorAll('.timeline-date');
+            navItems.forEach(function(item) {
+                item.addEventListener('click', function() {
+                    navItems.forEach(function(n) { n.classList.remove('active'); });
+                    this.classList.add('active');
+                });
+            });
+            var observer = new IntersectionObserver(function(entries) {
+                entries.forEach(function(entry) {
+                    if (entry.isIntersecting) {
+                        var id = entry.target.id;
+                        navItems.forEach(function(item) {
+                            item.classList.toggle('active', item.dataset.date === id);
+                        });
+                    }
+                });
+            }, { rootMargin: '-100px 0px -50% 0px' });
+            dateSections.forEach(function(section) { observer.observe(section); });
+        })();
+        </script>
     
 
     </main>
