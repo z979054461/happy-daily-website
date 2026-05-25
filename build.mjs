@@ -336,14 +336,13 @@ const globalStyles = `
         background: var(--primary); border-radius: 50%; border: 3px solid var(--bg); z-index: 2;
     }
     .timeline-content {
-        flex: 1; background: var(--bg-card); border: 1px solid var(--border);
+        flex: 1; display: block; text-decoration: none; color: inherit;
+        background: var(--bg-card); border: 1px solid var(--border);
         border-radius: 12px; padding: 16px; transition: all 0.25s ease;
     }
     .timeline-content:hover { transform: translateY(-2px); border-color: var(--primary); box-shadow: var(--shadow); }
     .timeline-content .tag { margin-bottom: 8px; display: inline-block; }
     .timeline-content h4 { font-size: 0.95rem; font-weight: 600; margin-bottom: 8px; line-height: 1.4; }
-    .timeline-content h4 a { text-decoration: none; color: var(--text); transition: color 0.2s; }
-    .timeline-content h4 a:hover { color: var(--primary); }
     .timeline-content p { font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; margin: 0; }
     
     /* 移动端适配 */
@@ -458,11 +457,11 @@ const homeTmpl = `
                     </div>
                     <% grouped[date].forEach(function(a, i) { %>
                         <div class="timeline-item fade-up" style="animation-delay: <%= (dateIdx * 0.1) + (i * 0.05) %>s">
-                            <div class="timeline-content">
+                            <a href="<%= basePath %><%= a.path %>" class="timeline-content">
                                 <span class="tag tag-<%= a.topic %>"><%= a.category %></span>
-                                <h4><a href="<%= basePath %><%= a.path %>"><%= a.title %></a></h4>
+                                <h4><%= a.title %></h4>
                                 <p><%= a.excerpt ? a.excerpt.substring(0, 80) : '' %>...</p>
-                            </div>
+                            </a>
                         </div>
                     <% }); %>
                 <% }); %>
